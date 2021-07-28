@@ -1,0 +1,61 @@
+name: main
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      - uses: bahmutov/npm-install@v1
+
+      - run: yarn type
+      - run: yarn lint
+      - run: yarn test --ci
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      - name: install advzip
+        run: sudo apt install advancecomp
+
+      - uses: bahmutov/npm-install@v1
+
+      - run: yarn build
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: build
+          path: ./dist/*
+
+  analyze-bundle:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: build
+
+      - name: test the bundle against the report endpoint
+        run: curl --silent -X POST --form bundle=@bundle.zip --form category=desktop https://iw8sii1h9b.execute-api.eu-west-1.amazonaws.com/stage/analyze-bundle > report.json
+
+      - name: fails if the report failed
+        run: node -e "for (const c of require('./report.json').checks){if(c.result!=='ok'){console.error(c);throw c.description;}}"
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: bundle-analyzer-report
+          path: report.json
