@@ -7,30 +7,40 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 6.10.0
+
       - uses: actions/setup-node@v2
         with:
           node-version: 16
+          cache: pnpm
 
-      - uses: bahmutov/npm-install@v1
-
-      - run: yarn type
-      - run: yarn lint
-      - run: yarn test --ci
+      - run: pnpm install --frozen-lockfile
+      - run: npm run type
+      - run: npm run lint
+      - run: npm run test --ci
 
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 6.10.0
+
       - uses: actions/setup-node@v2
         with:
           node-version: 16
+          cache: pnpm
 
       - name: install advzip
         run: sudo apt install advancecomp
 
-      - uses: bahmutov/npm-install@v1
-
-      - run: yarn build
+      - run: pnpm install --frozen-lockfile
+      - run: npm run build
 
       - uses: actions/upload-artifact@v2
         with:
@@ -42,20 +52,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/setup-node@v2
-        with:
-          node-version: 16
 
       - uses: actions/download-artifact@v2
         with:
           name: build
 
       - name: test the bundle against the report endpoint
-        run: curl --silent -X POST --form bundle=@bundle.zip --form category=desktop https://iw8sii1h9b.execute-api.eu-west-1.amazonaws.com/stage/analyze-bundle > report.json
+        run: |
+          curl --silent -X POST --form bundle=@bundle.zip --form category=desktop https://iw8sii1h9b.execute-api.eu-west-1.amazonaws.com/stage/analyze-bundle > report.json
+          node -e "console.log(JSON.stringify(require('./report.json'),null,2))"
 
       - name: fails if the report failed
         run: node -e "for (const c of require('./report.json').checks){if(c.result!=='ok'){console.error(c);throw c.description;}}"
-
-      - uses: actions/upload-artifact@v2
-        with:
-          name: bundle-analyzer-report
-          path: report.json

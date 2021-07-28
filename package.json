@@ -7,8 +7,9 @@
     "node": "16"
   },
   "dependencies": {
+    "stats-js": "1.0.1",
     "gl-matrix": "3.3.0",
-    "park-miller": "1.1.0"
+    "park-miller": "2.0.0"
   },
   "devDependencies": {
     "@ampproject/rollup-plugin-closure-compiler": "0.26.0",
