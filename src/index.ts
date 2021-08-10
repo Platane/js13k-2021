@@ -1,39 +1,35 @@
-import "./mock-random";
-import "./stats";
+import "./debug/mock-random";
+import "./debug/stats";
 
-import { draw } from "./renderer/blob/blob";
-import { Vec2 } from "./types";
+import { state } from "./state";
+
+import { onUpdate as onUpdateWalking } from "./system/walking";
+import "./system/controls";
+
+import { draw as drawBlob } from "./renderer/blob/blob";
+import { draw as drawSelection } from "./renderer/selection/selection";
 
 const canvas = document.getElementsByTagName("canvas")[0];
-// canvas.width = window.innerWidth;
-// canvas.height = window.innerHeight;
-
 canvas.width = canvas.clientWidth;
 canvas.height = canvas.clientHeight;
-
 const ctx = canvas.getContext("2d")!;
 
-const particles: Vec2[][] = [
-  Array.from({ length: 8 }, () => [
-    Math.random() * 60 + 60,
-    Math.random() * 80 + 100,
-  ]),
-
-  Array.from({ length: 8 }, () => [
-    Math.random() * 60 + 10,
-    Math.random() * 80 + 30,
-  ]),
-
-  Array.from({ length: 8 }, () => [
-    Math.random() * 50 + 80,
-    Math.random() * 80 + 30,
-  ]),
-];
-
-draw(ctx, particles);
-
+let previousDate = Date.now();
 const loop = () => {
-  draw(ctx, particles);
+  const now = Date.now();
+  const dt = now - previousDate;
+  previousDate = now;
+
+  // update
+  onUpdateWalking(dt);
+
+  // draw
+  ctx.clearRect(0, 0, 9999, 9999);
+  drawBlob(ctx, state.particles);
+  drawSelection(ctx, state.selection);
+
+  // loop
   requestAnimationFrame(loop);
 };
+
 loop();

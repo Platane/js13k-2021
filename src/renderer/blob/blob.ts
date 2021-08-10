@@ -1,4 +1,4 @@
-import { Vec2 } from "../../types";
+import { Vec2 } from "../../math/types";
 import { s, textures } from "./textures";
 
 export const draw = (ctx: CanvasRenderingContext2D, particleList: Vec2[][]) => {
