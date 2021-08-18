@@ -1,5 +1,5 @@
 // @ts-ignore
-import Stats from "stats-js";
+import Stats from "stats.js";
 
 const stats = new Stats();
 stats.showPanel(0);
