@@ -47,6 +47,18 @@ jobs:
           name: build
           path: ./dist/*
 
+      - name: generate badge
+        run: |
+          node -e "const s=require('fs').statSync('dist/bundle.zip').size;console.log(JSON.stringify({label:'size',message:(s/1024).toFixed(2)+'K',color:s<13312?'success':'important'}))" > dist/shieldio_size.json
+
+      - name: deploy to gh-pages
+        uses: crazy-max/ghaction-github-pages@v2
+        if: success() && github.ref == 'refs/heads/master'
+        with:
+          build_dir: dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   analyze-bundle:
     needs: build
     runs-on: ubuntu-latest
