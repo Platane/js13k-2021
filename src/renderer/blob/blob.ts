@@ -29,7 +29,7 @@ const drawParticles = (
   });
 };
 
-const resolution = 12;
+const resolution = 8;
 
 const drawBlobs = (ctx: CanvasRenderingContext2D, particleList: Vec2[][]) => {
   const imageData = ctx.getImageData(0, 0, 400, 400);
