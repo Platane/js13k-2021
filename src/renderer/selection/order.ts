@@ -3,9 +3,7 @@ import { Vec2 } from "../../math/types";
 import { State } from "../../state";
 
 export const draw = (ctx: CanvasRenderingContext2D, state: State) => {
-  // state.particlesMoveOrders.
-
-  state.selection.particlesIndexes?.forEach((i) => {
+  (state.selection.particlesIndexes || []).forEach((i) => {
     const [x, y] = state.particlesPositions[0][i];
 
     ctx.fillStyle = "#000";
