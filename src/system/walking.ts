@@ -8,6 +8,33 @@ const aPool = Array.from({ length: 3 }, () =>
 
 const dt = 1 / 60;
 
+const neighborForce = (d: number) => {
+  if (d < 1) d = 1;
+
+  const repulsion = 10;
+  const friendliness = 0.1;
+  const d0 = 40;
+  const bump = 10;
+
+  if (d > 200) return 0;
+
+  return (
+    (repulsion * repulsion) / (d * d) -
+    friendliness * Math.exp((-(d - d0) * (d - d0)) / (bump * bump))
+  );
+};
+const repulsionForce = (d: number) => {
+  if (d < 1) d = 1;
+
+  const repulsion = 10;
+
+  if (d > 200) return 0;
+
+  return (repulsion * repulsion) / (d * d);
+};
+
+const targetForce = 20;
+
 export const onUpdate = () => {
   // reset and static forces
   state.particlesPositions.forEach((positions, k) =>
@@ -28,13 +55,34 @@ export const onUpdate = () => {
 
         vec2.sub(v, t, p);
         vec2.normalize(v, v);
-        vec2.scaleAndAdd(a, a, v, 20);
+        vec2.scaleAndAdd(a, a, v, targetForce);
       }
     })
   );
 
   // repulsion forces
-  //
+  state.particlesPositions.forEach((positions, k1) =>
+    positions.forEach((p1, i1) => {
+      const a1 = aPool[k1][i1];
+
+      for (let k2 = 0; k2 <= k1; k2++)
+        for (
+          let i2 = 0;
+          i2 < (k1 === k2 ? i1 : state.particlesPositions[k2].length);
+          i2++
+        ) {
+          const p2 = state.particlesPositions[k2][i2];
+          const a2 = aPool[k2][i2];
+
+          vec2.sub(v, p2, p1);
+          const l = vec2.length(v);
+          const f = k1 === k2 ? neighborForce(l) : repulsionForce(l);
+
+          vec2.scaleAndAdd(a1, a1, v, -f / l);
+          vec2.scaleAndAdd(a2, a2, v, f / l);
+        }
+    })
+  );
 
   // apply acceleration
   state.particlesPositions.forEach((positions, k) =>
