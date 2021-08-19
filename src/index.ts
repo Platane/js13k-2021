@@ -1,5 +1,4 @@
 import "./debug/mock-random";
-import "./debug/stats";
 
 import { state } from "./state";
 
