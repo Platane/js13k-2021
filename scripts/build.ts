@@ -112,7 +112,7 @@ export const build = async () => {
     .readFileSync(path.resolve(__dirname, "..", "src", "index.html"))
     .toString();
 
-  const minifiedHtmlContent = minifyHtml(
+  const minifiedHtmlContent = await minifyHtml(
     htmlContent.replace(
       '<script src="../dist/bundle.js"></script>',
       `<script>${code!}</script>`
