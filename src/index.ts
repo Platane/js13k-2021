@@ -3,11 +3,15 @@ import "./debug/mock-random";
 import { state } from "./state";
 
 import { onUpdate as onUpdateWalking } from "./system/walking";
+import { onUpdate as onUpdateBoundingBox } from "./system/boundingBox";
 import "./system/controls";
+
+import "./system/boundingBox";
 
 import { draw as drawBlob } from "./renderer/blob/blob";
 import { draw as drawSelection } from "./renderer/selection/selection";
 import { draw as drawSelectionOrder } from "./renderer/selection/order";
+import { draw as drawBoundingBox } from "./renderer/boundingBox";
 
 const canvas = document.getElementsByTagName("canvas")[0];
 canvas.width = canvas.clientWidth;
@@ -22,13 +26,17 @@ const loop = () => {
   const now = Date.now() / 1000;
 
   // update
-  for (; t0 + k * updateRate <= now; k++) onUpdateWalking();
+  for (; t0 + k * updateRate <= now; k++) {
+    onUpdateWalking();
+    onUpdateBoundingBox();
+  }
 
   // draw
   ctx.clearRect(0, 0, 9999, 9999);
   drawBlob(ctx, state.particlesPositions);
   drawSelection(ctx, state.selection);
   drawSelectionOrder(ctx, state);
+  drawBoundingBox(ctx, state);
 
   // loop
   requestAnimationFrame(loop);

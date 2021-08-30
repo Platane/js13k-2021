@@ -5,6 +5,7 @@ export const draw = (
   selection: State["selection"]
 ) => {
   ctx.lineWidth = 0.5;
+  ctx.strokeStyle = "#000";
 
   if (selection.rect) {
     const [[ax, ay], [bx, by]] = selection.rect;

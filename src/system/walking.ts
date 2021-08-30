@@ -11,16 +11,17 @@ const dt = 1 / 60;
 const neighborForce = (d: number) => {
   if (d < 1) d = 1;
 
-  const repulsion = 10;
+  const repulsion = 16;
   const friendliness = 0.1;
   const d0 = 40;
   const bump = 10;
 
-  if (d > 200) return 0;
+  if (d > 50) return 0;
+
+  const u = repulsion / d;
 
   return (
-    (repulsion * repulsion) / (d * d) -
-    friendliness * Math.exp((-(d - d0) * (d - d0)) / (bump * bump))
+    u * u * u - friendliness * Math.exp((-(d - d0) * (d - d0)) / (bump * bump))
   );
 };
 const repulsionForce = (d: number) => {
@@ -28,9 +29,9 @@ const repulsionForce = (d: number) => {
 
   const repulsion = 10;
 
-  if (d > 200) return 0;
+  if (d > 50) return 0;
 
-  return (repulsion * repulsion) / (d * d);
+  return (repulsion * repulsion * repulsion) / (d * d * d);
 };
 
 const targetForce = 20;

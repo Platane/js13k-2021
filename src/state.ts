@@ -1,4 +1,4 @@
-import { Vec2 } from "./math/types";
+import { Box, Vec2 } from "./math/types";
 
 const particlesPositions = [
   Array.from(
@@ -6,10 +6,10 @@ const particlesPositions = [
     () => [Math.random() * 60 + 60, Math.random() * 80 + 100] as Vec2
   ),
 
-  Array.from(
-    { length: 8 },
-    () => [Math.random() * 60 + 10, Math.random() * 80 + 30] as Vec2
-  ),
+  // Array.from(
+  //   { length: 8 },
+  //   () => [Math.random() * 60 + 10, Math.random() * 80 + 30] as Vec2
+  // ),
 
   Array.from(
     { length: 8 },
@@ -27,6 +27,10 @@ export const state = {
     rect: null as null | [Vec2, Vec2],
     particlesIndexes: null as null | number[],
   },
+
+  particlesBoundingBoxes: particlesPositions.map(
+    () => [] as { box: Box; indexes: number[] }[]
+  ),
 };
 
 export type State = typeof state;

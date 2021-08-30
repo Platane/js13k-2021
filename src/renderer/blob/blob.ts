@@ -1,4 +1,5 @@
-import { Vec2 } from "../../math/types";
+import { gauss, threshold } from "../../math/gauss";
+import type { Vec2 } from "../../math/types";
 import { s, textures } from "./textures";
 
 export const draw = (ctx: CanvasRenderingContext2D, particleList: Vec2[][]) => {
@@ -32,7 +33,7 @@ const drawParticles = (
 const resolution = 4;
 
 const drawBlobs = (ctx: CanvasRenderingContext2D, particleList: Vec2[][]) => {
-  const imageData = ctx.getImageData(0, 0, 400, 400);
+  const imageData = ctx.getImageData(0, 0, 300, 300);
   const { data, width, height } = imageData;
 
   for (let sx = 0; sx < width; sx += resolution)
@@ -55,7 +56,7 @@ const drawBlobs = (ctx: CanvasRenderingContext2D, particleList: Vec2[][]) => {
         }
       });
 
-      if (bestSum > 0.38) {
+      if (bestSum > threshold) {
         const texture = textures[bestI];
 
         for (let dx = 0; dx < resolution; dx++)
@@ -73,8 +74,3 @@ const drawBlobs = (ctx: CanvasRenderingContext2D, particleList: Vec2[][]) => {
 
   ctx.putImageData(imageData, 0, 0);
 };
-
-const tau = 12;
-const gauss = (x: number) => Math.exp((-0.5 * (x * x)) / (tau * tau));
-
-// console.log(Array.from({ length: 30 }, (_, i) => gauss(i)));
