@@ -8,7 +8,7 @@ import "./system/controls";
 
 import "./system/boundingBox";
 
-import { draw as drawBlob } from "./renderer/blob/blob";
+import { drawBlobs, drawParticles } from "./renderer/blob/blob";
 import { draw as drawSelection } from "./renderer/selection/selection";
 import { draw as drawSelectionOrder } from "./renderer/selection/order";
 import { draw as drawBoundingBox } from "./renderer/boundingBox";
@@ -33,7 +33,8 @@ const loop = () => {
 
   // draw
   ctx.clearRect(0, 0, 9999, 9999);
-  drawBlob(ctx, state.particlesPositions);
+  drawBlobs(ctx);
+  drawParticles(ctx);
   drawSelection(ctx, state.selection);
   drawSelectionOrder(ctx, state);
   drawBoundingBox(ctx, state);

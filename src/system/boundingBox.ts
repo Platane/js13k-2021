@@ -3,7 +3,7 @@ import { boxCollide, enlargeBoxByBox } from "../math/box";
 import { tau, threshold } from "../math/gauss";
 import { Box } from "../math/types";
 
-export const dMin = Math.sqrt(-2 * Math.log(threshold) * (tau * tau)) * 1.2;
+export const dMin = Math.sqrt(-2 * Math.log(threshold) * (tau * tau)) * 1.5;
 
 export const onUpdate = () => {
   state.particlesBoundingBoxes.forEach((boundingBoxes, k) => {

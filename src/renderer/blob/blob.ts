@@ -2,18 +2,10 @@ import { boxContainsPoint } from "../../math/box";
 import { gauss, threshold } from "../../math/gauss";
 import type { Vec2 } from "../../math/types";
 import { state } from "../../state";
-import { colors, s, textures, texturesData } from "./textures";
+import { colors, s, texturesData } from "./textures";
 
-export const draw = (ctx: CanvasRenderingContext2D, particleList: Vec2[][]) => {
-  drawBlobs(ctx);
-  drawParticles(ctx, particleList);
-};
-
-const drawParticles = (
-  ctx: CanvasRenderingContext2D,
-  particleList: Vec2[][]
-) => {
-  particleList.forEach((particles, i) => {
+export const drawParticles = (ctx: CanvasRenderingContext2D) => {
+  state.particlesPositions.forEach((particles, i) => {
     for (const [x, y] of particles) {
       ctx.fillStyle = "#333";
       ctx.beginPath();
@@ -30,7 +22,7 @@ const drawParticles = (
 
 const resolution = 2;
 
-const drawBlobs = (ctx: CanvasRenderingContext2D) => {
+export const drawBlobs = (ctx: CanvasRenderingContext2D) => {
   const imageData = ctx.getImageData(0, 0, 300, 300);
   const { data, width, height } = imageData;
 
@@ -48,7 +40,8 @@ const drawBlobs = (ctx: CanvasRenderingContext2D) => {
             const sum = indexes.reduce((sum, i) => {
               const [x, y] = state.particlesPositions[k][i];
               const d = Math.hypot(x - c[0], y - c[1]);
-              return sum + gauss(d);
+              const g = gauss(d);
+              return sum + g;
             }, 0);
 
             if (sum > bestSum) {
