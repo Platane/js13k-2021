@@ -22,3 +22,9 @@ export const intervalCollide = (
 export const boxCollide = (a: Box, b: Box) =>
   intervalCollide(a[0][0], a[1][0], b[0][0], b[1][0]) &&
   intervalCollide(a[0][1], a[1][1], b[0][1], b[1][1]);
+
+export const boxContainsPoint = (box: Box, p: Vec2) =>
+  box[0][0] <= p[0] &&
+  p[0] <= box[1][0] &&
+  box[0][1] <= p[1] &&
+  p[1] <= box[1][1];

@@ -9,8 +9,6 @@ export const onUpdate = () => {
   state.particlesBoundingBoxes.forEach((boundingBoxes, k) => {
     while (boundingBoxes[0]) boundingBoxes.shift();
 
-    debugger;
-
     const boxes = state.particlesPositions[k].map(([x, y], i) => ({
       box: [
         [x - dMin, y - dMin],
