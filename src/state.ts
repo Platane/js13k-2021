@@ -20,6 +20,10 @@ const particlesPositions = [
 type MoveOrder = { targets: Vec2[]; indexes: number[] };
 
 export const state = {
+  camera: { a: 1, offset: [0, 30] as Vec2 },
+
+  worldDimensions: [300, 300] as Vec2,
+
   particlesPositions,
   particlesMoveOrders: particlesPositions.map(() => [] as MoveOrder[]),
 

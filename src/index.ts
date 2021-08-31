@@ -17,9 +17,19 @@ import { draw as drawSelectionOrder } from "./renderer/selection/order";
 import { draw as drawBoundingBox } from "./renderer/boundingBox";
 
 const canvas = document.getElementsByTagName("canvas")[0];
-canvas.width = canvas.clientWidth;
-canvas.height = canvas.clientHeight;
 const ctx = canvas.getContext("2d")!;
+
+const resize = () => {
+  canvas.width = canvas.clientWidth;
+  canvas.height = canvas.clientHeight;
+
+  state.camera.a = Math.min(
+    canvas.clientWidth / state.worldDimensions[0],
+    canvas.clientHeight / state.worldDimensions[1]
+  );
+};
+resize();
+window.addEventListener("resize", resize);
 
 const updateRate = 1 / 60;
 const t0 = Date.now() / 1000;
@@ -36,6 +46,10 @@ const loop = () => {
 
   // draw
   ctx.clearRect(0, 0, 9999, 9999);
+  ctx.save();
+  ctx.scale(state.camera.a, state.camera.a);
+  ctx.translate(state.camera.offset[0], state.camera.offset[1]);
+
   if (debug.boundingBoxes) drawBoundingBox(ctx, state);
   if (debug.cheapRenderer) drawCheapBlobs(ctx);
   else drawBlobs(ctx);
@@ -44,6 +58,8 @@ const loop = () => {
     drawSelectionOrder(ctx, state);
   }
   drawSelection(ctx, state.selection);
+
+  ctx.restore();
 
   // loop
   requestAnimationFrame(loop);

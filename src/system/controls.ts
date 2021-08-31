@@ -1,5 +1,6 @@
 import { Vec2 } from "../math/types";
 import { state } from "../state";
+import { unProjX, unProjY } from "./camera";
 
 const getCollisionFunction = ([[ax, ay], [bx, by]]: [Vec2, Vec2]) => {
   const xMin = Math.min(ax, bx);
@@ -20,8 +21,8 @@ const onMouseDown = ({ pageX, pageY, button, ctrlKey }: MouseEvent) => {
       action = selectAction;
 
       state.selection.rect = [
-        [pageX, pageY],
-        [pageX, pageY],
+        [unProjX(pageX), unProjY(pageY)],
+        [unProjX(pageX), unProjY(pageY)],
       ];
       state.selection.particlesIndexes = null;
     }
@@ -41,7 +42,10 @@ const onMouseDown = ({ pageX, pageY, button, ctrlKey }: MouseEvent) => {
       });
 
       // place order
-      state.particlesMoveOrders[0].push({ indexes, targets: [[pageX, pageY]] });
+      state.particlesMoveOrders[0].push({
+        indexes,
+        targets: [[unProjX(pageX), unProjY(pageY)]],
+      });
     }
   }
 };
@@ -49,8 +53,8 @@ const onMouseDown = ({ pageX, pageY, button, ctrlKey }: MouseEvent) => {
 const onMouseMove = ({ pageX, pageY }: MouseEvent) => {
   if (!state.selection.rect || action !== selectAction) return;
 
-  state.selection.rect[1][0] = pageX;
-  state.selection.rect[1][1] = pageY;
+  state.selection.rect[1][0] = unProjX(pageX);
+  state.selection.rect[1][1] = unProjY(pageY);
 
   const isHit = getCollisionFunction(state.selection.rect);
 
