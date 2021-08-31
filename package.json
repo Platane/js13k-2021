@@ -7,6 +7,7 @@
     "node": "16"
   },
   "dependencies": {
+    "dat.gui": "0.7.7",
     "gl-matrix": "3.3.0",
     "park-miller": "2.0.0",
     "stats.js": "0.17.0"
@@ -19,6 +20,7 @@
     "@rollup/plugin-babel": "5.3.0",
     "@rollup/plugin-commonjs": "20.0.0",
     "@rollup/plugin-node-resolve": "13.0.4",
+    "@types/dat.gui": "0.7.7",
     "@types/google-closure-compiler": "0.0.19",
     "@types/html-minifier-terser": "5.1.2",
     "@types/jest": "27.0.1",

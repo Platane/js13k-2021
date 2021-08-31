@@ -1,4 +1,6 @@
 import "./debug/mock-random";
+// import "./debug/stats";
+import { debug } from "./debug/ui";
 
 import { state } from "./state";
 
@@ -9,6 +11,7 @@ import "./system/controls";
 import "./system/boundingBox";
 
 import { drawBlobs, drawParticles } from "./renderer/blob/blob";
+import { drawBlobs as drawCheapBlobs } from "./renderer/blob/cheapBlob";
 import { draw as drawSelection } from "./renderer/selection/selection";
 import { draw as drawSelectionOrder } from "./renderer/selection/order";
 import { draw as drawBoundingBox } from "./renderer/boundingBox";
@@ -33,11 +36,14 @@ const loop = () => {
 
   // draw
   ctx.clearRect(0, 0, 9999, 9999);
-  drawBlobs(ctx);
-  drawParticles(ctx);
+  if (debug.boundingBoxes) drawBoundingBox(ctx, state);
+  if (debug.cheapRenderer) drawCheapBlobs(ctx);
+  else drawBlobs(ctx);
+  if (debug.particles) {
+    drawParticles(ctx);
+    drawSelectionOrder(ctx, state);
+  }
   drawSelection(ctx, state.selection);
-  drawSelectionOrder(ctx, state);
-  drawBoundingBox(ctx, state);
 
   // loop
   requestAnimationFrame(loop);

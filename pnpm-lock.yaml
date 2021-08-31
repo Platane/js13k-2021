@@ -8,11 +8,13 @@ specifiers:
   '@rollup/plugin-babel': 5.3.0
   '@rollup/plugin-commonjs': 20.0.0
   '@rollup/plugin-node-resolve': 13.0.4
+  '@types/dat.gui': 0.7.7
   '@types/google-closure-compiler': 0.0.19
   '@types/html-minifier-terser': 5.1.2
   '@types/jest': 27.0.1
   '@types/mkdirp': 1.0.2
   babel-plugin-transform-define: 2.0.0
+  dat.gui: 0.7.7
   gl-matrix: 3.3.0
   html-minifier-terser: 6.0.0
   jest: 27.1.0
@@ -29,6 +31,7 @@ specifiers:
   webpack-glsl-minify: 1.4.2
 
 dependencies:
+  dat.gui: 0.7.7
   gl-matrix: 3.3.0
   park-miller: 2.0.0
   stats.js: 0.17.0
@@ -41,6 +44,7 @@ devDependencies:
   '@rollup/plugin-babel': 5.3.0_@babel+core@7.15.0+rollup@2.56.3
   '@rollup/plugin-commonjs': 20.0.0_rollup@2.56.3
   '@rollup/plugin-node-resolve': 13.0.4_rollup@2.56.3
+  '@types/dat.gui': 0.7.7
   '@types/google-closure-compiler': 0.0.19
   '@types/html-minifier-terser': 5.1.2
   '@types/jest': 27.0.1
@@ -836,6 +840,10 @@ packages:
       '@babel/types': 7.15.0
     dev: true
 
+  /@types/dat.gui/0.7.7:
+    resolution: {integrity: sha512-CxLCme0He5Jk3uQwfO/fGZMyNhb/ypANzqX0yU9lviBQMlen5SOvQTBQ/Cd9x5mFlUAK5Tk8RgvTyLj1nYkz+w==}
+    dev: true
+
   /@types/estree/0.0.39:
     resolution: {integrity: sha512-EYNwp3bU+98cpU4lAWYYL7Zz+2gryWH1qbdDTidVd6hkiR6weksdbMadyXKXNPEkQFhXM+hVO9ZygomHXp+AIw==}
     dev: true
@@ -1352,6 +1360,10 @@ packages:
     dependencies:
       cssom: 0.3.8
     dev: true
+
+  /dat.gui/0.7.7:
+    resolution: {integrity: sha512-sRl/28gF/XRC5ywC9I4zriATTsQcpSsRG7seXCPnTkK8/EQMIbCu5NPMpICLGxX9ZEUvcXR3ArLYCtgreFoMDw==}
+    dev: false
 
   /data-urls/2.0.0:
     resolution: {integrity: sha512-X5eWTSXO/BJmpdIKCRuKUgSCgAN0OwliVK3yPKbwIWU1Tdw5BRajxlzMidvh+gwko9AfQ9zIj52pzF91Q3YAvQ==}
