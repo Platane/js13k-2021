@@ -1,18 +1,18 @@
 import { vec2 } from "gl-matrix";
 import { Vec2 } from "../../math/types";
-import { State } from "../../state";
+import { state } from "../../state";
 
-export const draw = (ctx: CanvasRenderingContext2D, state: State) => {
+export const draw = (ctx: CanvasRenderingContext2D) => {
   (state.selection.particlesIndexes || []).forEach((i) => {
     const [x, y] = state.particlesPositions[0][i];
 
-    ctx.fillStyle = "#000";
+    ctx.fillStyle = "#aaa";
     ctx.beginPath();
-    ctx.arc(x, y, 2.5, 0, Math.PI * 2);
+    ctx.arc(x, y, 3.2 / state.camera.a, 0, Math.PI * 2);
     ctx.fill();
   });
 
-  ctx.lineWidth = 0.5;
+  ctx.lineWidth = 1 / state.camera.a;
 
   state.particlesMoveOrders.forEach((orders, k) =>
     orders.forEach((order) => {
@@ -23,7 +23,7 @@ export const draw = (ctx: CanvasRenderingContext2D, state: State) => {
 
         vec2.subtract(v, t, p);
         vec2.normalize(v, v);
-        vec2.scaleAndAdd(v, p, v, 10);
+        vec2.scaleAndAdd(v, p, v, 20 / state.camera.a);
 
         ctx.beginPath();
         ctx.moveTo(p[0], p[1]);

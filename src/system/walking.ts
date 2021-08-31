@@ -9,14 +9,12 @@ const aPool = Array.from({ length: 3 }, () =>
 const dt = 1 / 60;
 
 const neighborForce = (d: number) => {
-  if (d < 1) d = 1;
+  if (d < 1000) d = 1000;
 
-  const repulsion = 16;
+  const repulsion = 16000;
   const friendliness = 0.1;
-  const d0 = 40;
+  const d0 = 4000;
   const bump = 10;
-
-  if (d > 50) return 0;
 
   const u = repulsion / d;
 
@@ -25,16 +23,10 @@ const neighborForce = (d: number) => {
   );
 };
 const repulsionForce = (d: number) => {
-  if (d < 1) d = 1;
-
-  const repulsion = 10;
-
-  if (d > 50) return 0;
-
-  return (repulsion * repulsion * repulsion) / (d * d * d);
+  return 0;
 };
 
-const targetForce = 20;
+const targetForce = 12000;
 
 export const onUpdate = () => {
   // reset and static forces
@@ -102,7 +94,7 @@ export const onUpdate = () => {
 
       if (
         order.indexes.some(
-          (i) => vec2.distance(state.particlesPositions[k][i], t) < 10
+          (i) => vec2.distance(state.particlesPositions[k][i], t) < 1000
         )
       ) {
         order.targets.shift();

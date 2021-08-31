@@ -1,4 +1,4 @@
-export const tau = 12;
+export const tau = (3 / 100) * (1 << 16);
 
 export const threshold = 0.38;
 

@@ -10,12 +10,12 @@ export const drawParticles = (ctx: CanvasRenderingContext2D) => {
     for (const [x, y] of particles) {
       ctx.fillStyle = "#333";
       ctx.beginPath();
-      ctx.arc(x, y, 2.5, 0, Math.PI * 2);
+      ctx.arc(x, y, 5 / state.camera.a, 0, Math.PI * 2);
       ctx.fill();
 
       ctx.fillStyle = colors[i];
       ctx.beginPath();
-      ctx.arc(x, y, 2, 0, Math.PI * 2);
+      ctx.arc(x, y, 3 / state.camera.a, 0, Math.PI * 2);
       ctx.fill();
     }
   });
@@ -25,7 +25,7 @@ export const drawBlobs = (ctx: CanvasRenderingContext2D) => {
   const width = window.innerWidth;
   const height = window.innerHeight;
 
-  const resolution = Math.floor(state.camera.a * 2) + 1;
+  const resolution = Math.floor(Math.sqrt(width * height) / 120) + 1;
 
   const imageData = ctx.getImageData(0, 0, width, height);
   const { data } = imageData;

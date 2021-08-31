@@ -15,6 +15,7 @@ import { drawBlobs as drawCheapBlobs } from "./renderer/blob/cheapBlob";
 import { draw as drawSelection } from "./renderer/selection/selection";
 import { draw as drawSelectionOrder } from "./renderer/selection/order";
 import { draw as drawBoundingBox } from "./renderer/boundingBox";
+import { draw as drawGizmo } from "./renderer/gizmo";
 
 const canvas = document.getElementsByTagName("canvas")[0];
 const ctx = canvas.getContext("2d")!;
@@ -50,14 +51,15 @@ const loop = () => {
   ctx.scale(state.camera.a, state.camera.a);
   ctx.translate(state.camera.offset[0], state.camera.offset[1]);
 
-  if (debug.boundingBoxes) drawBoundingBox(ctx, state);
+  if (debug.boundingBoxes) drawBoundingBox(ctx);
   if (debug.cheapRenderer) drawCheapBlobs(ctx);
   else drawBlobs(ctx);
   if (debug.particles) {
     drawParticles(ctx);
-    drawSelectionOrder(ctx, state);
+    drawSelectionOrder(ctx);
   }
-  drawSelection(ctx, state.selection);
+  drawSelection(ctx);
+  drawGizmo(ctx);
 
   ctx.restore();
 
