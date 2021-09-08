@@ -35,7 +35,7 @@ export const isJoiningSegmentInside = (
     const x = a[0] + (v[0] / d) * (dMin + m + t * step);
     const y = a[1] + (v[1] / d) * (dMin + m + t * step);
 
-    onPoint?.(x, y);
+    if (onPoint) onPoint(x, y);
 
     if (!isInsideBlob(positions, x, y)) return false;
   }
