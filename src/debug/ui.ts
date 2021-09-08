@@ -4,6 +4,7 @@ export const debug = {
   cheapRenderer: false,
   particles: !false,
   boundingBoxes: false,
+  pack: false,
 };
 
 if (process.env.NODE_ENV !== "production") {
@@ -14,4 +15,5 @@ if (process.env.NODE_ENV !== "production") {
   gui.add(debug, "cheapRenderer");
   gui.add(debug, "particles");
   gui.add(debug, "boundingBoxes");
+  gui.add(debug, "pack");
 }

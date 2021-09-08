@@ -16,6 +16,8 @@ import { draw as drawSelection } from "./renderer/selection/selection";
 import { draw as drawSelectionOrder } from "./renderer/selection/order";
 import { draw as drawBoundingBox } from "./renderer/boundingBox";
 import { draw as drawGizmo } from "./renderer/gizmo";
+import { drawLink } from "./renderer/blob/link";
+import { drawPack } from "./renderer/blob/pack";
 
 const canvas = document.getElementsByTagName("canvas")[0];
 const ctx = canvas.getContext("2d")!;
@@ -57,6 +59,10 @@ const loop = () => {
   if (debug.particles) {
     drawParticles(ctx);
     drawSelectionOrder(ctx);
+  }
+  if (debug.pack) {
+    drawLink(ctx, 0, 0, 2);
+    drawPack(ctx, 0, 0);
   }
   drawSelection(ctx);
   drawGizmo(ctx);
