@@ -21,7 +21,7 @@ export const draw = (ctx: CanvasRenderingContext2D) => {
       order.indexes.forEach((i) => {
         const p = state.particlesPositions[k][i];
 
-        vec2.subtract(v, t, p);
+        vec2.subtract(v, t.point, p);
         vec2.normalize(v, v);
         vec2.scaleAndAdd(v, p, v, 20 / state.camera.a);
 

@@ -4,41 +4,37 @@ const s = 1 << 16;
 
 const particlesPositions = [
   Array.from(
-    { length: 8 },
+    { length: 26 },
     () =>
       new Uint16Array([
-        (Math.random() * 0.2 + 0.6) * s,
-        (Math.random() * 0.3 + 0.5) * s,
+        (Math.random() * 0.2 + 0.5) * s,
+        (Math.random() * 0.16 + 0.6) * s,
       ]) as any as Vec2
   ),
 
-  // Array.from(
-  //   { length: 8 },
-  //   () => [Math.random() * 60 + 10, Math.random() * 80 + 30] as Vec2
-  // ),
-
   Array.from(
-    { length: 10 },
+    { length: 4 },
     () =>
       new Uint16Array([
-        (Math.random() * 0.2 + 0.1) * s,
-        (Math.random() * 0.3 + 0.2) * s,
+        (Math.random() * 0.12 + 0.4) * s,
+        (Math.random() * 0.14 + 0.13) * s,
+      ]) as any as Vec2
+  ),
+
+  Array.from(
+    { length: 16 },
+    () =>
+      new Uint16Array([
+        (Math.random() * 0.2 + 0.3) * s,
+        (Math.random() * 0.14 + 0.32) * s,
       ]) as any as Vec2
   ),
 ];
 
-type MoveOrder = { targets: Vec2[]; indexes: number[] };
-
-type Collision = {
-  aI: number;
-  bI: number;
-
-  aIndexes: number[];
-  bIndexes: number[];
-
-  aBoundingBox: number;
-  bBoundingBox: number;
-};
+export type MoveTargetPoint = { point: Vec2 };
+export type MoveTargetEnemy = { indexes: number[]; k: number; point: Vec2 };
+export type MoveTarget = MoveTargetPoint | MoveTargetEnemy;
+export type MoveOrder = { targets: MoveTarget[]; indexes: number[] };
 
 export const state = {
   camera: { a: 1, offset: [0, 0] as Vec2 },
@@ -56,8 +52,6 @@ export const state = {
   particlesBoundingBoxes: particlesPositions.map(
     () => [] as { box: Box; indexes: number[] }[]
   ),
-
-  collisions: [] as Collision[],
 };
 
 export type State = typeof state;

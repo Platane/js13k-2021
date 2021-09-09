@@ -1,26 +1,39 @@
 import { vec2 } from "gl-matrix";
+import { dMin } from "../math/gauss";
 import { Vec2 } from "../math/types";
-import { state } from "../state";
+import { MoveOrder, state } from "../state";
 
-const aPool = Array.from({ length: 3 }, () =>
+const aPool = state.particlesPositions.map(() =>
   Array.from({ length: 300 }, () => [0, 0] as Vec2)
+);
+const orders = state.particlesPositions.map(() =>
+  Array.from({ length: 300 }, () => undefined as undefined | MoveOrder)
 );
 
 const dt = 1 / 60;
 
-const neighborForce = (d: number) => {
-  if (d < 1000) d = 1000;
+export const neighborForce = (d: number) => {
+  if (d < 600) d = 600;
 
-  const repulsion = 16000;
-  const friendliness = 0.1;
-  const d0 = 4000;
-  const bump = 10;
+  const repulsionAmplitude = 2000;
+  const attractionAmplitude = 2;
+  const d0 = dMin;
+  const bump = 800;
 
-  const u = repulsion / d;
+  const u = repulsionAmplitude / d;
 
-  return (
-    u * u * u - friendliness * Math.exp((-(d - d0) * (d - d0)) / (bump * bump))
-  );
+  let f = (1000 * 2000 * 2000) / (d * d);
+
+  // let f =
+  //   1000 *
+  //   (u * u -
+  //     attractionAmplitude * Math.exp((-(d - d0) * (d - d0)) / (bump * bump)));
+
+  if (d > d0) f = f / (u - d0) ** 2;
+  if (d > d0 * 1.3) f = 0;
+  // if (d > 6000) f = f * f;
+
+  return f;
 };
 const repulsionForce = (d: number) => {
   return 0;
@@ -28,8 +41,9 @@ const repulsionForce = (d: number) => {
 
 const targetForce = 12000;
 
+export const onUpdateOrder = () => {};
+
 export const onUpdate = () => {
-  // reset and static forces
   state.particlesPositions.forEach((positions, k) =>
     positions.forEach((p, i) => {
       const a = aPool[k][i];
@@ -38,42 +52,58 @@ export const onUpdate = () => {
       a[0] = 0;
       a[1] = 0;
 
-      // target attraction
+      // get order
       const order = state.particlesMoveOrders[k].find((o) =>
         o.indexes.includes(i)
       );
+      orders[k][i] = order;
 
-      if (order) {
-        const t = order.targets[0];
+      // if (order) {
+      //   const t = order.targets[0];
+
+      //   vec2.sub(v, t, p);
+      //   vec2.normalize(v, v);
+      //   vec2.scaleAndAdd(a, a, v, targetForce);
+      // }
+
+      if (!order) {
+        // no order, hold the position, apply neighbor force
+
+        state.particlesPositions[k].forEach((p2, j) => {
+          if (i === j) return;
+
+          vec2.sub(v, p2, p);
+          const d = vec2.length(v);
+
+          const f = neighborForce(d);
+
+          vec2.scaleAndAdd(a, a, v, -f / d);
+        });
+      } else {
+        const { point: t } = order.targets[0];
 
         vec2.sub(v, t, p);
         vec2.normalize(v, v);
-        vec2.scaleAndAdd(a, a, v, targetForce);
+
+        vec2.scaleAndAdd(a, a, v, 5000);
+
+        state.particlesPositions.forEach((positions, h) =>
+          positions.forEach((p2, j) => {
+            vec2.sub(v, p2, p);
+            const d = vec2.length(v);
+
+            let f = 0;
+
+            if (h === k && i !== j) {
+              f = (500 * 2000 * 2000) / (d * d);
+            } else if (h !== k) {
+              f = (1000 * 2000 * 2000) / (d * d);
+            }
+
+            if (f > Number.EPSILON) vec2.scaleAndAdd(a, a, v, -f / d);
+          })
+        );
       }
-    })
-  );
-
-  // repulsion forces
-  state.particlesPositions.forEach((positions, k1) =>
-    positions.forEach((p1, i1) => {
-      const a1 = aPool[k1][i1];
-
-      for (let k2 = 0; k2 <= k1; k2++)
-        for (
-          let i2 = 0;
-          i2 < (k1 === k2 ? i1 : state.particlesPositions[k2].length);
-          i2++
-        ) {
-          const p2 = state.particlesPositions[k2][i2];
-          const a2 = aPool[k2][i2];
-
-          vec2.sub(v, p2, p1);
-          const l = vec2.length(v);
-          const f = k1 === k2 ? neighborForce(l) : repulsionForce(l);
-
-          vec2.scaleAndAdd(a1, a1, v, -f / l);
-          vec2.scaleAndAdd(a2, a2, v, f / l);
-        }
     })
   );
 
@@ -90,7 +120,7 @@ export const onUpdate = () => {
   // step move orders
   state.particlesMoveOrders.forEach((orders, k) =>
     orders.forEach((order, i) => {
-      const t = order.targets[0];
+      const { point: t } = order.targets[0];
 
       if (
         order.indexes.some(

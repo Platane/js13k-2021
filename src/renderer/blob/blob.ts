@@ -1,8 +1,9 @@
+import { debug } from "../../debug/ui";
 import { boxContainsPoint } from "../../math/box";
 import { gauss, threshold } from "../../math/gauss";
 import type { Vec2 } from "../../math/types";
 import { state } from "../../state";
-import { projX, projY, unProjX, unProjY } from "../../system/camera";
+import { unProj } from "../../system/camera";
 import { colors, s, texturesData } from "./textures";
 
 export const drawParticles = (ctx: CanvasRenderingContext2D) => {
@@ -25,7 +26,9 @@ export const drawBlobs = (ctx: CanvasRenderingContext2D) => {
   const width = window.innerWidth;
   const height = window.innerHeight;
 
-  const resolution = Math.floor(Math.sqrt(width * height) / 120) + 1;
+  const resolution = debug.hightResolution
+    ? 1
+    : Math.floor(Math.sqrt(width * height) / 120) + 1;
 
   const imageData = ctx.getImageData(0, 0, width, height);
   const { data } = imageData;
@@ -35,8 +38,7 @@ export const drawBlobs = (ctx: CanvasRenderingContext2D) => {
       let bestI = 0;
       let bestSum = 0;
 
-      c[0] = unProjX(sx + resolution / 2);
-      c[1] = unProjY(sy + resolution / 2);
+      unProj(c, sx + resolution / 2, sy + resolution / 2);
 
       state.particlesBoundingBoxes.forEach((bb, k) =>
         bb.forEach(({ box, indexes }) => {

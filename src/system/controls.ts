@@ -73,7 +73,7 @@ const onMouseDown = ({
       // place order
       state.particlesMoveOrders[0].push({
         indexes,
-        targets: [[unProjX(pageX), unProjY(pageY)]],
+        targets: [{ point: unProj([0, 0], pageX, pageY) }],
       });
 
       break;

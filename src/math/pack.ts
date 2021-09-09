@@ -43,6 +43,10 @@ export const isJoiningSegmentInside = (
   return true;
 };
 
+/**
+ * return the list of index of point that belong to the same blob as i
+ * also remove the picked points from the indexes list
+ */
 export const getPack = (
   positions: Vec2[],
   i: number,
