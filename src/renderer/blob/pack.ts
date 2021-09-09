@@ -1,10 +1,7 @@
-import { boxContainsPoint } from "../../math/box";
-import { gauss, threshold } from "../../math/gauss";
-import { isJoiningSegmentInside, getPack } from "../../math/pack";
-import type { Vec2 } from "../../math/types";
+import { getBlobEdge } from "../../math/blob";
+import { dMin } from "../../math/gauss";
+import { getPack } from "../../math/pack";
 import { state } from "../../state";
-import { projX, projY, unProjX, unProjY } from "../../system/camera";
-import { colors, s, texturesData } from "./textures";
 
 export const drawPack = (
   ctx: CanvasRenderingContext2D,
@@ -34,4 +31,26 @@ export const drawPack = (
     );
     ctx.fill();
   });
+
+  {
+    const edges = getBlobEdge(state.particlesPositions[k], dMin / 2);
+
+    if (edges) {
+      edges.forEach((p) => {
+        ctx.fillStyle = "green";
+        ctx.beginPath();
+        ctx.arc(p[0], p[1], 3 / state.camera.a, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      ctx.strokeStyle = "#333";
+      ctx.lineWidth = 1.4 / state.camera.a;
+      ctx.beginPath();
+      ctx.moveTo(edges[edges.length - 1][0], edges[edges.length - 1][1]);
+      edges.forEach((p) => {
+        ctx.lineTo(p[0], p[1]);
+      });
+      ctx.stroke();
+    }
+  }
 };
