@@ -127,5 +127,5 @@ export const getTriangulation = (positions: Vec2[]) => {
   positions.splice(n, 3);
 
   // return tt;
-  return triangles;
+  return triangles as unknown as [number, number, number][];
 };

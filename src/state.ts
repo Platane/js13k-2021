@@ -17,7 +17,7 @@ const particlesPositions = [
     () =>
       new Uint16Array([
         (Math.random() * 0.12 + 0.4) * s,
-        (Math.random() * 0.14 + 0.13) * s,
+        (Math.random() * 0.14 + 0.15) * s,
       ]) as any as Vec2
   ),
 
