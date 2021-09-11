@@ -61,7 +61,7 @@ const loop = () => {
     drawSelectionOrder(ctx);
   }
   if (debug.pack) {
-    drawLink(ctx, 0, 0, 2);
+    // drawLink(ctx, 0, 0, 2);
     drawPack(ctx, 0, 0);
   }
   drawSelection(ctx);

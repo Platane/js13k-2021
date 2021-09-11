@@ -1,4 +1,5 @@
 import { getBlobEdge } from "../../math/blob";
+import { getTriangulation } from "../../math/delaunay";
 import { dMin } from "../../math/gauss";
 import { getPack } from "../../math/pack";
 import { state } from "../../state";
@@ -8,49 +9,72 @@ export const drawPack = (
   k: number,
   i: number
 ) => {
-  ctx.fillStyle = "red";
-  ctx.beginPath();
-  ctx.arc(
-    state.particlesPositions[k][i][0],
-    state.particlesPositions[k][i][1],
-    2.4 / state.camera.a,
-    0,
-    Math.PI * 2
-  );
-  ctx.fill();
+  // ctx.fillStyle = "red";
+  // ctx.beginPath();
+  // ctx.arc(
+  //   state.particlesPositions[k][i][0],
+  //   state.particlesPositions[k][i][1],
+  //   2.4 / state.camera.a,
+  //   0,
+  //   Math.PI * 2
+  // );
+  // ctx.fill();
 
-  getPack(state.particlesPositions[k], i).forEach((i) => {
-    ctx.fillStyle = "red";
-    ctx.beginPath();
-    ctx.arc(
-      state.particlesPositions[k][i][0],
-      state.particlesPositions[k][i][1],
-      1.4 / state.camera.a,
-      0,
-      Math.PI * 2
-    );
-    ctx.fill();
-  });
+  // getPack(state.particlesPositions[k], i).forEach((i) => {
+  //   ctx.fillStyle = "red";
+  //   ctx.beginPath();
+  //   ctx.arc(
+  //     state.particlesPositions[k][i][0],
+  //     state.particlesPositions[k][i][1],
+  //     1.4 / state.camera.a,
+  //     0,
+  //     Math.PI * 2
+  //   );
+  //   ctx.fill();
+  // });
+
+  // {
+  //   const a = performance.now();
+  //   const edges = getBlobEdge(state.particlesPositions[k], dMin / 3);
+  //   // console.log(performance.now() - a);
+
+  //   if (edges) {
+  //     edges.forEach((p) => {
+  //       ctx.fillStyle = "green";
+  //       ctx.beginPath();
+  //       ctx.arc(p[0], p[1], 3 / state.camera.a, 0, Math.PI * 2);
+  //       ctx.fill();
+  //     });
+
+  //     ctx.strokeStyle = "#333";
+  //     ctx.lineWidth = 1.4 / state.camera.a;
+  //     ctx.beginPath();
+  //     ctx.moveTo(edges[edges.length - 1][0], edges[edges.length - 1][1]);
+  //     edges.forEach((p) => {
+  //       ctx.lineTo(p[0], p[1]);
+  //     });
+  //     ctx.stroke();
+  //   }
+  // }
 
   {
-    const edges = getBlobEdge(state.particlesPositions[k], dMin / 2);
+    const triangles = getTriangulation(state.particlesPositions[k]);
 
-    if (edges) {
-      edges.forEach((p) => {
-        ctx.fillStyle = "green";
-        ctx.beginPath();
-        ctx.arc(p[0], p[1], 3 / state.camera.a, 0, Math.PI * 2);
-        ctx.fill();
-      });
-
+    triangles.forEach((triangle) => {
       ctx.strokeStyle = "#333";
       ctx.lineWidth = 1.4 / state.camera.a;
       ctx.beginPath();
-      ctx.moveTo(edges[edges.length - 1][0], edges[edges.length - 1][1]);
-      edges.forEach((p) => {
-        ctx.lineTo(p[0], p[1]);
+      ctx.moveTo(
+        state.particlesPositions[k][triangle[triangle.length - 1]][0],
+        state.particlesPositions[k][triangle[triangle.length - 1]][1]
+      );
+      triangle.forEach((i) => {
+        ctx.lineTo(
+          state.particlesPositions[k][i][0],
+          state.particlesPositions[k][i][1]
+        );
       });
       ctx.stroke();
-    }
+    });
   }
 };

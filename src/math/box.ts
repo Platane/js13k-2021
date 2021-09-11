@@ -28,3 +28,11 @@ export const boxContainsPoint = (box: Box, p: Vec2) =>
   p[0] <= box[1][0] &&
   box[0][1] <= p[1] &&
   p[1] <= box[1][1];
+
+export const emptyBox = (box: Box) => {
+  box[0][0] = Infinity;
+  box[0][1] = Infinity;
+  box[1][0] = -Infinity;
+  box[1][1] = -Infinity;
+  return box;
+};
