@@ -1,4 +1,5 @@
-import dat from "dat.gui";
+// import dat from "dat.gui";
+import { Pane } from "tweakpane";
 
 export const debug = {
   cheapRenderer: false,
@@ -9,13 +10,11 @@ export const debug = {
 };
 
 if (process.env.NODE_ENV !== "production") {
-  const gui = new dat.GUI();
+  const pane = new Pane();
 
-  gui.useLocalStorage = true;
-
-  gui.add(debug, "cheapRenderer");
-  gui.add(debug, "hightResolution");
-  gui.add(debug, "particles");
-  gui.add(debug, "boundingBoxes");
-  gui.add(debug, "pack");
+  (pane as any).addInput(debug, "cheapRenderer");
+  (pane as any).addInput(debug, "hightResolution");
+  (pane as any).addInput(debug, "particles");
+  (pane as any).addInput(debug, "boundingBoxes");
+  (pane as any).addInput(debug, "pack");
 }

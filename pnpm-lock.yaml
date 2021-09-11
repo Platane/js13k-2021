@@ -13,7 +13,7 @@ specifiers:
   '@types/html-minifier-terser': 6.0.0
   '@types/jest': 27.0.1
   '@types/mkdirp': 1.0.2
-  babel-plugin-transform-define: 2.0.0
+  babel-plugin-transform-define: 2.0.1
   dat.gui: 0.7.7
   esbuild: 0.12.26
   gl-matrix: 3.3.0
@@ -28,7 +28,8 @@ specifiers:
   terser: 5.7.2
   ts-jest: 27.0.5
   ts-node: 10.2.1
-  typescript: 4.4.2
+  tweakpane: 3.0.5
+  typescript: 4.4.3
   webpack-glsl-minify: 1.4.2
 
 dependencies:
@@ -36,6 +37,7 @@ dependencies:
   gl-matrix: 3.3.0
   park-miller: 2.0.0
   stats.js: 0.17.0
+  tweakpane: 3.0.5
 
 devDependencies:
   '@ampproject/rollup-plugin-closure-compiler': 0.27.0_rollup@2.56.3
@@ -50,7 +52,7 @@ devDependencies:
   '@types/html-minifier-terser': 6.0.0
   '@types/jest': 27.0.1
   '@types/mkdirp': 1.0.2
-  babel-plugin-transform-define: 2.0.0
+  babel-plugin-transform-define: 2.0.1
   esbuild: 0.12.26
   html-minifier-terser: 6.0.2
   jest: 27.1.1_ts-node@10.2.1
@@ -59,9 +61,9 @@ devDependencies:
   rollup: 2.56.3
   rollup-pluginutils: 2.8.2
   terser: 5.7.2
-  ts-jest: 27.0.5_300c0f30fb8ae648760ed3f93a84bac9
-  ts-node: 10.2.1_typescript@4.4.2
-  typescript: 4.4.2
+  ts-jest: 27.0.5_641fbc5e155e632cba37e891513e588f
+  ts-node: 10.2.1_typescript@4.4.3
+  typescript: 4.4.3
   webpack-glsl-minify: 1.4.2
 
 packages:
@@ -1220,8 +1222,8 @@ packages:
       '@types/babel__traverse': 7.14.2
     dev: true
 
-  /babel-plugin-transform-define/2.0.0:
-    resolution: {integrity: sha512-0dv5RNRUlUKxGYIIErl01lpvi8b7W2R04Qcl1mCj70ahwZcgiklfXnFlh4FGnRh6aayCfSZKdhiMryVzcq5Dmg==}
+  /babel-plugin-transform-define/2.0.1:
+    resolution: {integrity: sha512-7lDR1nFGSJHmhq/ScQtp9LTDmNE2yKPoLtwfiu+WQZnj84XL/J/5AZWZXwYcOwbDtUPhtg+y0yxTiP/oGDU6Kw==}
     engines: {node: '>= 8.x.x'}
     dependencies:
       lodash: 4.17.21
@@ -2137,7 +2139,7 @@ packages:
       jest-validate: 27.1.1
       micromatch: 4.0.4
       pretty-format: 27.1.1
-      ts-node: 10.2.1_typescript@4.4.2
+      ts-node: 10.2.1_typescript@4.4.3
     transitivePeerDependencies:
       - bufferutil
       - canvas
@@ -3236,7 +3238,7 @@ packages:
     resolution: {integrity: sha1-y99WD9e5r2MlAv7UD5GMFX6pcTc=}
     dev: true
 
-  /ts-jest/27.0.5_300c0f30fb8ae648760ed3f93a84bac9:
+  /ts-jest/27.0.5_641fbc5e155e632cba37e891513e588f:
     resolution: {integrity: sha512-lIJApzfTaSSbtlksfFNHkWOzLJuuSm4faFAfo5kvzOiRAuoN4/eKxVJ2zEAho8aecE04qX6K1pAzfH5QHL1/8w==}
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
     hasBin: true
@@ -3264,11 +3266,11 @@ packages:
       lodash: 4.17.21
       make-error: 1.3.6
       semver: 7.3.5
-      typescript: 4.4.2
+      typescript: 4.4.3
       yargs-parser: 20.2.9
     dev: true
 
-  /ts-node/10.2.1_typescript@4.4.2:
+  /ts-node/10.2.1_typescript@4.4.3:
     resolution: {integrity: sha512-hCnyOyuGmD5wHleOQX6NIjJtYVIO8bPP8F2acWkB4W06wdlkgyvJtubO/I9NkI88hCFECbsEgoLc0VNkYmcSfw==}
     engines: {node: '>=12.0.0'}
     hasBin: true
@@ -3294,13 +3296,17 @@ packages:
       create-require: 1.1.1
       diff: 4.0.2
       make-error: 1.3.6
-      typescript: 4.4.2
+      typescript: 4.4.3
       yn: 3.1.1
     dev: true
 
   /tslib/2.3.1:
     resolution: {integrity: sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==}
     dev: true
+
+  /tweakpane/3.0.5:
+    resolution: {integrity: sha512-HivFjOs510RbZSNgxv4x5LVFsHFN1ryfgpOp3n6wrgg1jLxbdlA/UTIbTLi/DYH7g76rGQqW/+IRmHPfjIujpQ==}
+    dev: false
 
   /type-check/0.3.2:
     resolution: {integrity: sha1-WITKtRLPHTVeP7eE8wgEsrUg23I=}
@@ -3325,8 +3331,8 @@ packages:
       is-typedarray: 1.0.0
     dev: true
 
-  /typescript/4.4.2:
-    resolution: {integrity: sha512-gzP+t5W4hdy4c+68bfcv0t400HVJMMd2+H9B7gae1nQlBzCqvrXX+6GL/b3GAgyTH966pzrZ70/fRjwAtZksSQ==}
+  /typescript/4.4.3:
+    resolution: {integrity: sha512-4xfscpisVgqqDfPaJo5vkd+Qd/ItkoagnHpufr+i2QCHBsNYp+G7UAoyFl8aPtx879u38wPV65rZ8qbGZijalA==}
     engines: {node: '>=4.2.0'}
     hasBin: true
     dev: true

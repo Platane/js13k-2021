@@ -10,7 +10,8 @@
     "dat.gui": "0.7.7",
     "gl-matrix": "3.3.0",
     "park-miller": "2.0.0",
-    "stats.js": "0.17.0"
+    "stats.js": "0.17.0",
+    "tweakpane": "3.0.5"
   },
   "devDependencies": {
     "@ampproject/rollup-plugin-closure-compiler": "0.27.0",
@@ -25,7 +26,7 @@
     "@types/html-minifier-terser": "6.0.0",
     "@types/jest": "27.0.1",
     "@types/mkdirp": "1.0.2",
-    "babel-plugin-transform-define": "2.0.0",
+    "babel-plugin-transform-define": "2.0.1",
     "esbuild": "0.12.26",
     "html-minifier-terser": "6.0.2",
     "jest": "27.1.1",
@@ -36,7 +37,7 @@
     "terser": "5.7.2",
     "ts-jest": "27.0.5",
     "ts-node": "10.2.1",
-    "typescript": "4.4.2",
+    "typescript": "4.4.3",
     "webpack-glsl-minify": "1.4.2"
   },
   "scripts": {
