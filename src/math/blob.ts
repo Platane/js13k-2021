@@ -67,7 +67,7 @@ const getNextPointOnBlobEdge = (
 
   ortho(n, v);
 
-  for (let k = 100; k--; ) {
+  for (let k = 3; k--; ) {
     vec2.scaleAndAdd(a, o, v, l);
     vec2.scaleAndAdd(a, a, n, -s / 2);
     vec2.scaleAndAdd(b, a, n, s);
@@ -81,10 +81,11 @@ const getNextPointOnBlobEdge = (
     l /= 2;
   }
 
-  return null as any;
+  return null;
 };
 
 const v: Vec2 = [0, 0];
+const nn: Vec2 = [1, 0];
 export const getBlobEdge = (positions: Vec2[], s = dMin / 0.8) => {
   let h: Vec2 = getPointOnBlobEdge([0, 0], positions);
   let h_: Vec2 = [h[0], h[1] - 1];
@@ -95,10 +96,23 @@ export const getBlobEdge = (positions: Vec2[], s = dMin / 0.8) => {
     vec2.sub(v, h, h_);
     vec2.normalize(v, v);
 
-    h_ = h;
-    h = getNextPointOnBlobEdge([0, 0], positions, h, v, s);
+    let next: Vec2 | null;
+    next = getNextPointOnBlobEdge([0, 0], positions, h, v, s);
 
-    if (!h) return null;
+    // likely in a hole, retry shooting a bit toward the outside
+    if (!next) {
+      ortho(nn, v);
+      for (let j = 5; !next && j--; ) {
+        vec2.lerp(v, v, nn, 0.5);
+        vec2.normalize(v, v);
+        next = getNextPointOnBlobEdge([0, 0], positions, h, v, s);
+      }
+    }
+
+    if (!next) return null;
+
+    h_ = h;
+    h = next;
 
     if (edge.length > 4 && vec2.distance(edge[0], h) < s * 1.6) {
       const v_ = vec2.sub([0, 0], edge[0], h);
