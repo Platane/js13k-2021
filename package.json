@@ -26,6 +26,7 @@
     "@types/jest": "27.0.1",
     "@types/mkdirp": "1.0.2",
     "babel-plugin-transform-define": "2.0.0",
+    "esbuild": "0.12.26",
     "html-minifier-terser": "6.0.2",
     "jest": "27.1.1",
     "mkdirp": "1.0.4",

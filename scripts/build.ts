@@ -82,6 +82,8 @@ export const createRollupInputOptions = (production: boolean) =>
             compiler({
               language_in: "ECMASCRIPT_2020",
               language_out: "ECMASCRIPT_2020",
+              compilation_level: "ADVANCED",
+              // assume_function_wrapper: true,
             }),
           ]
         : []),

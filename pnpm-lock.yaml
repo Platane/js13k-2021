@@ -15,6 +15,7 @@ specifiers:
   '@types/mkdirp': 1.0.2
   babel-plugin-transform-define: 2.0.0
   dat.gui: 0.7.7
+  esbuild: 0.12.26
   gl-matrix: 3.3.0
   html-minifier-terser: 6.0.2
   jest: 27.1.1
@@ -50,6 +51,7 @@ devDependencies:
   '@types/jest': 27.0.1
   '@types/mkdirp': 1.0.2
   babel-plugin-transform-define: 2.0.0
+  esbuild: 0.12.26
   html-minifier-terser: 6.0.2
   jest: 27.1.1_ts-node@10.2.1
   mkdirp: 1.0.4
@@ -1589,6 +1591,12 @@ packages:
 
   /emoji-regex/8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
+    dev: true
+
+  /esbuild/0.12.26:
+    resolution: {integrity: sha512-YmTkhPKjvTJ+G5e96NyhGf69bP+hzO0DscqaVJTi5GM34uaD4Ecj7omu5lJO+NrxCUBRhy2chONLK1h/2LwoXA==}
+    hasBin: true
+    requiresBuild: true
     dev: true
 
   /escalade/3.1.1:
