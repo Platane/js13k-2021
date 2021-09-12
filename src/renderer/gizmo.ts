@@ -1,6 +1,5 @@
 import { state } from "../state";
 import { allyRepulsionForce } from "../system/step";
-import { neighborForce } from "../system/walking";
 
 export const draw = (ctx: CanvasRenderingContext2D) => {
   ctx.lineWidth = 0.7 / state.camera.a;

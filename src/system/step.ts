@@ -6,8 +6,6 @@ import { Vec2 } from "../math/types";
 import { getTriangulation } from "../math/delaunay";
 import { vec2 } from "gl-matrix";
 import { getBorders } from "../math/borders";
-import { onUpdate as step } from "./walking";
-import { inheritLeadingComments } from ".pnpm/@babel+types@7.15.4/node_modules/@babel/types";
 import { ortho } from "../math/vec2";
 
 export const onUpdate = () => {
