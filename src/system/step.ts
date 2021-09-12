@@ -29,7 +29,7 @@ export const onUpdate = () => {
 
   // compute the mesh for each box
   // + compute the border
-  const meshes = boxes.map((b) => {
+  boxes.forEach((b) => {
     const positions: Vec2[] = [];
     const ks: number[] = [];
 
@@ -42,19 +42,19 @@ export const onUpdate = () => {
 
     const triangles = getTriangulation(positions);
 
-    // {
-    //   ctx.lineWidth = 0.3 / state.camera.a;
+    {
+      ctx.lineWidth = 0.3 / state.camera.a;
 
-    //   triangles.forEach((tr) => {
-    //     ctx.strokeStyle =
-    //       ks[tr[0]] != ks[tr[1]] || ks[tr[0]] != ks[tr[2]] ? "green" : "blue";
-    //     ctx.beginPath();
-    //     ctx.moveTo(positions[tr[0]][0], positions[tr[0]][1]);
-    //     for (let i = 3; i--; )
-    //       ctx.lineTo(positions[tr[i]][0], positions[tr[i]][1]);
-    //     ctx.stroke();
-    //   });
-    // }
+      triangles.forEach((tr) => {
+        ctx.strokeStyle =
+          ks[tr[0]] != ks[tr[1]] || ks[tr[0]] != ks[tr[2]] ? "green" : "blue";
+        ctx.beginPath();
+        ctx.moveTo(positions[tr[0]][0], positions[tr[0]][1]);
+        for (let i = 3; i--; )
+          ctx.lineTo(positions[tr[i]][0], positions[tr[i]][1]);
+        ctx.stroke();
+      });
+    }
 
     const lines =
       b.indexes.reduce((s, is) => s + +!!is.length, 0) >= 2
@@ -170,8 +170,6 @@ export const onUpdate = () => {
       p[0] += a[0] * dt;
       p[1] += a[1] * dt;
     });
-
-    return { positions, ks, triangles };
   });
 
   // step move orders
@@ -193,14 +191,11 @@ export const onUpdate = () => {
   );
 };
 
-const H: Vec2 = [0, 0];
 const m: Vec2 = [0, 0];
 const v: Vec2 = [0, 0];
 const n: Vec2 = [0, 0];
 const as = Array.from({ length: 300 }, () => [0, 0] as Vec2);
-// const aPool = state.particlesPositions.map(() =>
-//   Array.from({ length: 300 }, () => [0, 0] as Vec2)
-// );
+
 const dt = 1 / 60;
 
 export const allyRepulsionForce = (d: number) => {

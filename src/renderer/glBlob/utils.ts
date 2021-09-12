@@ -34,9 +34,6 @@ export const createProgram = (
 
   const shaderProgram = gl.createProgram() as WebGLProgram;
 
-  gl.compileShader(vertShader);
-  gl.compileShader(fragShader);
-
   gl.attachShader(shaderProgram, vertShader);
   gl.attachShader(shaderProgram, fragShader);
 

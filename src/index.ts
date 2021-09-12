@@ -35,31 +35,12 @@ const loop = () => {
   ctx.scale(state.camera.a, state.camera.a);
   ctx.translate(state.camera.offset[0], state.camera.offset[1]);
 
-  onUpdateBoundingBox();
-  // if (debug.cheapRenderer) drawCheapBlobs(ctx);
-  // else drawBlobs(ctx);
-
-  drawGlBlob();
-
   // update
-  for (; t0 + k * updateRate <= now; k++) {
-    // onUpdateWalking();
-  }
+  for (; t0 + k * updateRate <= now; k++) {}
   onUpdate();
 
-  // if (debug.boundingBoxes) drawBoundingBox(ctx);
-
-  if (debug.particles) {
-    // drawParticles(ctx);
-    // drawSelectionOrder(ctx);
-  }
-  // if (debug.pack) {
-  //   // drawLink(ctx, 0, 0, 2);
-  //   drawPack(ctx, 0, 0);
-  // }
+  drawGlBlob();
   drawSelection(ctx);
-  // drawGizmo(ctx);
-
   ctx.restore();
 
   // loop

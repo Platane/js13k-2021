@@ -46,8 +46,13 @@ void main() {
 
     float y = floor(pixelCoordinate.y * m);
 
-    vec2 u = vec2(mod((pixelCoordinate.x) * m + 0.5 * mod(y, 2.0), 1.0) * w +
-                      w * float(bestK),
+    vec2 u = vec2(
+
+        //
+        (mod((pixelCoordinate.x) * m + 0.5 * mod(y, 2.0), 1.0) * 0.96 + 0.02)
+        *
+                w +
+            w * float(bestK),
                   mod(pixelCoordinate.y * m, 1.0));
 
     color = texture(bannerTexture, u);
