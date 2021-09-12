@@ -2,6 +2,7 @@
 
 precision highp float;
 uniform highp usampler2D pointTexture;
+uniform highp sampler2D bannerTexture;
 uniform highp float tauSquare;
 uniform highp float threshold;
 uniform int nPoint;
@@ -14,11 +15,12 @@ float gauss(float x) { return exp(-0.5 * (x * x) / (tauSquare)); }
 
 void main() {
 
-  float u = 0.0;
+  // vec4 c = texture(bannerTexture, vec2(pixelCoordinate.xy));
+  // color = vec4(0.0, 1.0, pixelCoordinate.x, 1.0);
+  // color = vec4(0.0, 1.0, pixelCoordinate.x, 1.0);
 
-  float best = 0.0;
-
-  color = vec4(0.94, 0.97, 0.96, 1.0);
+  float bestSum = 0.0;
+  int bestK = -1;
 
   for (int k = 0; k < nK; k++) {
     float sum = 0.0;
@@ -34,15 +36,18 @@ void main() {
         sum += gauss(d);
       }
     }
-    if (sum > threshold && sum > best) {
-      best = sum;
-
-      if (k == 0)
-        color = vec4(1.0, 0.0, 1.0, 1.0);
-      if (k == 1)
-        color = vec4(0.0, 1.0, 1.0, 1.0);
-      if (k == 2)
-        color = vec4(0.0, 1.0, 0.0, 1.0);
+    if (sum > threshold && sum > bestSum) {
+      bestSum = sum;
+      bestK = k;
     }
   }
+
+  if (bestK == 0)
+    color = vec4(1.0, 0.0, 1.0, 1.0);
+  else if (bestK == 1)
+    color = vec4(0.0, 1.0, 1.0, 1.0);
+  else if (bestK == 2)
+    color = vec4(0.0, 1.0, 0.0, 1.0);
+  else
+    color = vec4(0.94, 0.97, 0.96, 1.0);
 }
