@@ -21,7 +21,7 @@ export const glsl = (
     if (filter(id)) {
       if (opts.compress) {
         const shader = await minifier.execute(code);
-        code = shader.sourceCode;
+        code = code.replace(/\s*\n\s*/g, "\n").replace(/[\t ]+/g, " ");
       }
 
       return {
