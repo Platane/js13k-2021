@@ -15,10 +15,6 @@ float gauss(float x) { return exp(-0.5 * (x * x) / (tauSquare)); }
 
 void main() {
 
-  // vec4 c = texture(bannerTexture, vec2(pixelCoordinate.xy));
-  // color = vec4(0.0, 1.0, pixelCoordinate.x, 1.0);
-  // color = vec4(0.0, 1.0, pixelCoordinate.x, 1.0);
-
   float bestSum = 0.0;
   int bestK = -1;
 
@@ -42,12 +38,26 @@ void main() {
     }
   }
 
-  if (bestK == 0)
-    color = vec4(1.0, 0.0, 1.0, 1.0);
-  else if (bestK == 1)
-    color = vec4(0.0, 1.0, 1.0, 1.0);
-  else if (bestK == 2)
-    color = vec4(0.0, 1.0, 0.0, 1.0);
-  else
-    color = vec4(0.94, 0.97, 0.96, 1.0);
+  if (bestK >= 0) {
+
+    float w = 1.0 / float(nK);
+
+    float y = floor(pixelCoordinate.y * 20.0);
+
+    vec2 u = vec2(mod((pixelCoordinate.x) * 20.0 + 0.5 * mod(y, 2.0), 1.0) * w +
+                      w * float(bestK),
+                  mod(pixelCoordinate.y * 20.0, 1.0));
+
+    color = texture(bannerTexture, u);
+  } else
+    color = vec4(0.0, 0.0, 0.0, 0.0);
+
+  // if (bestK == 0)
+  //   color = vec4(1.0, 0.0, 1.0, 1.0);
+  // else if (bestK == 1)
+  //   color = vec4(0.0, 1.0, 1.0, 1.0);
+  // else if (bestK == 2)
+  //   color = vec4(0.0, 1.0, 0.0, 1.0);
+  // else
+  //   color = c;
 }

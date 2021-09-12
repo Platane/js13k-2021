@@ -1,7 +1,7 @@
 export const textures: HTMLCanvasElement[] = [];
 export const texturesData: Uint8ClampedArray[] = [];
 
-export const s = 30;
+export const s = 128;
 
 {
   const canvas = document.createElement("canvas");

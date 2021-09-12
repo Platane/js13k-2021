@@ -23,42 +23,41 @@ const pointTextureData = new Uint16Array(
 const pointTextureLocation = gl.getUniformLocation(program, "pointTexture");
 gl.activeTexture(gl.TEXTURE1);
 gl.bindTexture(gl.TEXTURE_2D, pointTexture);
+gl.uniform1i(pointTextureLocation, 1);
 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-gl.uniform1i(pointTextureLocation, 1);
 
 //
 // bind banner atlas
-{
-  const bannerTexture = gl.createTexture();
-  const bannerTextureLocation = gl.getUniformLocation(program, "bannerTexture");
-  gl.activeTexture(gl.TEXTURE0);
-  gl.bindTexture(gl.TEXTURE_2D, bannerTexture);
-  gl.uniform1i(bannerTextureLocation, 0);
-  const bannerAtlas = document.createElement("canvas");
-  bannerAtlas.width = textures.length * textures[0].width;
-  bannerAtlas.height = textures[0].height;
-  const bannerAtlasCtx = bannerAtlas.getContext("2d")!;
-  textures.forEach((canvas, i) =>
-    bannerAtlasCtx.drawImage(canvas, i * canvas.width, 0)
-  );
-  gl.texImage2D(
-    gl.TEXTURE_2D,
-    0,
-    gl.RGBA,
-    bannerAtlas.width,
-    bannerAtlas.height,
-    0,
-    gl.RGBA,
-    gl.UNSIGNED_BYTE,
-    bannerAtlas
-  );
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-  gl.generateMipmap(gl.TEXTURE_2D);
-}
+
+const bannerTexture = gl.createTexture();
+const bannerTextureLocation = gl.getUniformLocation(program, "bannerTexture");
+gl.activeTexture(gl.TEXTURE0);
+gl.bindTexture(gl.TEXTURE_2D, bannerTexture);
+gl.uniform1i(bannerTextureLocation, 0);
+const bannerAtlas = document.createElement("canvas");
+bannerAtlas.width = textures.length * textures[0].width;
+bannerAtlas.height = textures[0].height;
+const bannerAtlasCtx = bannerAtlas.getContext("2d")!;
+textures.forEach((canvas, i) =>
+  bannerAtlasCtx.drawImage(canvas, i * canvas.width, 0)
+);
+gl.texImage2D(
+  gl.TEXTURE_2D,
+  0,
+  gl.RGBA,
+  bannerAtlas.width,
+  bannerAtlas.height,
+  0,
+  gl.RGBA,
+  gl.UNSIGNED_BYTE,
+  bannerAtlas
+);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+gl.generateMipmap(gl.TEXTURE_2D);
 
 //
 // bind uniform
@@ -89,9 +88,11 @@ var vertexBufferData = new Float32Array(
   -1, -1,
 ]
 );
-gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
-gl.bufferData(gl.ARRAY_BUFFER, vertexBufferData, gl.STATIC_DRAW);
 const vertexLocation = gl.getAttribLocation(program, "vertex");
+gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+gl.enableVertexAttribArray(vertexLocation);
+gl.vertexAttribPointer(vertexLocation, 2, gl.FLOAT, false, 0, 0);
+gl.bufferData(gl.ARRAY_BUFFER, vertexBufferData, gl.STATIC_DRAW);
 gl.bindAttribLocation(program, vertexLocation, "vertex");
 
 export const draw = () => {
@@ -109,6 +110,9 @@ export const draw = () => {
     })
   );
 
+  gl.useProgram(program);
+
+  gl.activeTexture(gl.TEXTURE1);
   gl.bindTexture(gl.TEXTURE_2D, pointTexture);
   gl.texImage2D(
     gl.TEXTURE_2D,
@@ -122,11 +126,8 @@ export const draw = () => {
     pointTextureData
   );
 
-  gl.useProgram(program);
-
-  gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
-  gl.enableVertexAttribArray(vertexLocation);
-  gl.vertexAttribPointer(vertexLocation, 2, gl.FLOAT, false, 0, 0);
+  gl.activeTexture(gl.TEXTURE0);
+  gl.bindTexture(gl.TEXTURE_2D, bannerTexture);
 
   gl.clear(gl.COLOR_BUFFER_BIT);
   gl.drawArrays(gl.TRIANGLES, 0, 6); // execute program

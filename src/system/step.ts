@@ -14,18 +14,18 @@ export const onUpdate = () => {
   // compute boundingBoxes
   const boxes = getBoundingBoxes(state.particlesPositions, dMin * 1.5);
 
-  {
-    ctx.lineWidth = 0.5 / state.camera.a;
+  // {
+  //   ctx.lineWidth = 0.5 / state.camera.a;
 
-    boxes.forEach(({ box: [[ax, ay], [bx, by]], indexes }) => {
-      ctx.strokeStyle =
-        indexes.reduce((s, is) => s + +!!is.length, 0) >= 2
-          ? "purple"
-          : "orange";
-      ctx.beginPath();
-      ctx.strokeRect(ax, ay, bx - ax, by - ay);
-    });
-  }
+  //   boxes.forEach(({ box: [[ax, ay], [bx, by]], indexes }) => {
+  //     ctx.strokeStyle =
+  //       indexes.reduce((s, is) => s + +!!is.length, 0) >= 2
+  //         ? "purple"
+  //         : "orange";
+  //     ctx.beginPath();
+  //     ctx.strokeRect(ax, ay, bx - ax, by - ay);
+  //   });
+  // }
 
   // compute the mesh for each box
   // + compute the border
@@ -42,19 +42,19 @@ export const onUpdate = () => {
 
     const triangles = getTriangulation(positions);
 
-    {
-      ctx.lineWidth = 0.3 / state.camera.a;
+    // {
+    //   ctx.lineWidth = 0.3 / state.camera.a;
 
-      triangles.forEach((tr) => {
-        ctx.strokeStyle =
-          ks[tr[0]] != ks[tr[1]] || ks[tr[0]] != ks[tr[2]] ? "green" : "blue";
-        ctx.beginPath();
-        ctx.moveTo(positions[tr[0]][0], positions[tr[0]][1]);
-        for (let i = 3; i--; )
-          ctx.lineTo(positions[tr[i]][0], positions[tr[i]][1]);
-        ctx.stroke();
-      });
-    }
+    //   triangles.forEach((tr) => {
+    //     ctx.strokeStyle =
+    //       ks[tr[0]] != ks[tr[1]] || ks[tr[0]] != ks[tr[2]] ? "green" : "blue";
+    //     ctx.beginPath();
+    //     ctx.moveTo(positions[tr[0]][0], positions[tr[0]][1]);
+    //     for (let i = 3; i--; )
+    //       ctx.lineTo(positions[tr[i]][0], positions[tr[i]][1]);
+    //     ctx.stroke();
+    //   });
+    // }
 
     const lines =
       b.indexes.reduce((s, is) => s + +!!is.length, 0) >= 2
