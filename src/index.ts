@@ -16,6 +16,7 @@ import { draw as drawSelection } from "./renderer/selection/selection";
 import { draw as drawSelectionOrder } from "./renderer/selection/order";
 import { draw as drawBoundingBox } from "./renderer/boundingBox";
 import { draw as drawGizmo } from "./renderer/gizmo";
+import { draw as drawGlBlob } from "./renderer/glBlob/glBlob";
 import { drawLink } from "./renderer/blob/link";
 import { drawPack } from "./renderer/blob/pack";
 import { ctx } from "./canvas";
@@ -34,25 +35,24 @@ const loop = () => {
   ctx.scale(state.camera.a, state.camera.a);
   ctx.translate(state.camera.offset[0], state.camera.offset[1]);
 
+  onUpdateBoundingBox();
   if (debug.cheapRenderer) drawCheapBlobs(ctx);
   else drawBlobs(ctx);
 
+  drawGlBlob();
+
   // update
   for (; t0 + k * updateRate <= now; k++) {
-    onUpdateWalking();
-    onUpdateBoundingBox();
+    // onUpdateWalking();
   }
   onUpdate();
 
   // if (debug.boundingBoxes) drawBoundingBox(ctx);
 
-  drawParticles(ctx);
-  drawSelectionOrder(ctx);
-
-  // if (debug.particles) {
-  //   drawParticles(ctx);
-  //   drawSelectionOrder(ctx);
-  // }
+  if (debug.particles) {
+    drawParticles(ctx);
+    drawSelectionOrder(ctx);
+  }
   // if (debug.pack) {
   //   // drawLink(ctx, 0, 0, 2);
   //   drawPack(ctx, 0, 0);
