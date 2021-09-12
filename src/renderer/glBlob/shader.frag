@@ -40,13 +40,15 @@ void main() {
 
   if (bestK >= 0) {
 
+    float m = 20.0;
+
     float w = 1.0 / float(nK);
 
-    float y = floor(pixelCoordinate.y * 20.0);
+    float y = floor(pixelCoordinate.y * m);
 
-    vec2 u = vec2(mod((pixelCoordinate.x) * 20.0 + 0.5 * mod(y, 2.0), 1.0) * w +
+    vec2 u = vec2(mod((pixelCoordinate.x) * m + 0.5 * mod(y, 2.0), 1.0) * w +
                       w * float(bestK),
-                  mod(pixelCoordinate.y * 20.0, 1.0));
+                  mod(pixelCoordinate.y * m, 1.0));
 
     color = texture(bannerTexture, u);
   } else
