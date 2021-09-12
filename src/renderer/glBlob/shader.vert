@@ -1,7 +1,18 @@
 #version 300 es
-  in vec4 vertex; 
-  out vec2 pixelCoordinate; 
-  void main(){
-     gl_Position = vertex;  
-     pixelCoordinate = vertex.xy*0.5+0.5; 
-  }
+
+uniform highp vec2 camera_a;
+uniform highp vec2 camera_offset;
+
+in vec2 position;
+in float iBox;
+
+out vec2 pos;
+flat out int iB;
+
+// out int iBox2;
+
+void main() {
+  gl_Position = vec4(position.xy * camera_a * 2.0 - 1.0, 0.0, 1.0);
+  pos = position.xy;
+  iB = int(iBox);
+}

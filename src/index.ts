@@ -4,21 +4,10 @@ import { debug } from "./debug/ui";
 
 import { state } from "./state";
 
-import { onUpdate as onUpdateWalking } from "./system/walking";
-import { onUpdate as onUpdateBoundingBox } from "./system/boundingBox";
 import "./system/controls";
 
-import "./system/boundingBox";
-
-import { drawBlobs, drawParticles } from "./renderer/blob/blob";
-import { drawBlobs as drawCheapBlobs } from "./renderer/blob/cheapBlob";
 import { draw as drawSelection } from "./renderer/selection/selection";
-import { draw as drawSelectionOrder } from "./renderer/selection/order";
-import { draw as drawBoundingBox } from "./renderer/boundingBox";
-import { draw as drawGizmo } from "./renderer/gizmo";
 import { draw as drawGlBlob } from "./renderer/glBlob/glBlob";
-import { drawLink } from "./renderer/blob/link";
-import { drawPack } from "./renderer/blob/pack";
 import { ctx } from "./canvas";
 import { onUpdate } from "./system/step";
 

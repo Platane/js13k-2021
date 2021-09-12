@@ -42,36 +42,36 @@ export const onUpdate = () => {
 
     const triangles = getTriangulation(positions);
 
-    {
-      ctx.lineWidth = 0.3 / state.camera.a;
+    // {
+    //   ctx.lineWidth = 0.3 / state.camera.a;
 
-      triangles.forEach((tr) => {
-        ctx.strokeStyle =
-          ks[tr[0]] != ks[tr[1]] || ks[tr[0]] != ks[tr[2]] ? "green" : "blue";
-        ctx.beginPath();
-        ctx.moveTo(positions[tr[0]][0], positions[tr[0]][1]);
-        for (let i = 3; i--; )
-          ctx.lineTo(positions[tr[i]][0], positions[tr[i]][1]);
-        ctx.stroke();
-      });
-    }
+    //   triangles.forEach((tr) => {
+    //     ctx.strokeStyle =
+    //       ks[tr[0]] != ks[tr[1]] || ks[tr[0]] != ks[tr[2]] ? "green" : "blue";
+    //     ctx.beginPath();
+    //     ctx.moveTo(positions[tr[0]][0], positions[tr[0]][1]);
+    //     for (let i = 3; i--; )
+    //       ctx.lineTo(positions[tr[i]][0], positions[tr[i]][1]);
+    //     ctx.stroke();
+    //   });
+    // }
 
     const lines =
       b.indexes.reduce((s, is) => s + +!!is.length, 0) >= 2
         ? getBorders(positions, ks, triangles)
         : [];
 
-    {
-      ctx.lineWidth = 2.6 / state.camera.a;
-      ctx.strokeStyle = "blue";
-      lines.forEach(({ line }) => {
-        ctx.beginPath();
-        ctx.moveTo(line[0][0], line[0][1]);
-        for (let i = 0; i < line.length; i++)
-          ctx.lineTo(line[i][0], line[i][1]);
-        ctx.stroke();
-      });
-    }
+    // {
+    //   ctx.lineWidth = 2.6 / state.camera.a;
+    //   ctx.strokeStyle = "blue";
+    //   lines.forEach(({ line }) => {
+    //     ctx.beginPath();
+    //     ctx.moveTo(line[0][0], line[0][1]);
+    //     for (let i = 0; i < line.length; i++)
+    //       ctx.lineTo(line[i][0], line[i][1]);
+    //     ctx.stroke();
+    //   });
+    // }
 
     //
     // step

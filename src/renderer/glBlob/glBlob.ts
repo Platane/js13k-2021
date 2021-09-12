@@ -3,15 +3,16 @@ import codeVert from "./shader.vert";
 import { gl } from "../../canvas";
 import { createProgram } from "./utils";
 import { state } from "../../state";
-import { tau, threshold } from "../../math/gauss";
+import { dMin, tau, threshold } from "../../math/gauss";
 import { textures } from "../blob/textures";
+import { getBoundingBoxes } from "../../math/boundingBox";
 
 const program = createProgram(gl, codeVert, codeFrag);
 gl.useProgram(program);
 
-const maxBoxes = 1;
+const maxBoxes = 16;
 const maxK = state.particlesPositions.length;
-const maxPoint = 256;
+const maxPoint = 128;
 
 const pointTextureWidth = maxBoxes * maxK;
 const pointTextureHeight = maxPoint;
@@ -65,52 +66,98 @@ gl.generateMipmap(gl.TEXTURE_2D);
   gl.uniform1f(gl.getUniformLocation(program, "tauSquare"), tau * tau);
   gl.uniform1f(gl.getUniformLocation(program, "threshold"), threshold);
   gl.uniform1i(
-    gl.getUniformLocation(program, "nPoint"),
-    state.particlesPositions.reduce((a, { length }) => Math.max(a, length), 0)
-  );
-  gl.uniform1i(
     gl.getUniformLocation(program, "nK"),
     state.particlesPositions.length
   );
 }
+const nPointLocation = gl.getUniformLocation(program, "nPoint");
+
+//
+// camera
+const cameraALocation = gl.getUniformLocation(program, "camera_a");
+const cameraOffsetLocation = gl.getUniformLocation(program, "camera_offset");
 
 // buffer
-var vertexBuffer = gl.createBuffer();
-var vertexBufferData = new Float32Array(
-  // prettier-ignore
-  [
-  -1, -1, 
-  1, -1, 
-  1, 1, 
-  
-  1, 1, 
-  -1, 1, 
-  -1, -1,
-]
-);
-const vertexLocation = gl.getAttribLocation(program, "vertex");
-gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
-gl.enableVertexAttribArray(vertexLocation);
-gl.vertexAttribPointer(vertexLocation, 2, gl.FLOAT, false, 0, 0);
-gl.bufferData(gl.ARRAY_BUFFER, vertexBufferData, gl.STATIC_DRAW);
-gl.bindAttribLocation(program, vertexLocation, "vertex");
+const positionBuffer = gl.createBuffer();
+const positionBufferData = new Float32Array(maxBoxes * 6 * 2);
+const positionLocation = gl.getAttribLocation(program, "position");
+gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+gl.enableVertexAttribArray(positionLocation);
+gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+gl.bufferData(gl.ARRAY_BUFFER, positionBufferData, gl.STATIC_DRAW);
+gl.bindAttribLocation(program, positionLocation, "position");
+
+const iBoxBuffer = gl.createBuffer();
+const iBoxBufferData = new Float32Array(maxBoxes * 6);
+for (let i = maxBoxes; i--; ) iBoxBufferData.fill(i, i * 6, (i + 1) * 6);
+const iBoxLocation = gl.getAttribLocation(program, "iBox");
+gl.bindBuffer(gl.ARRAY_BUFFER, iBoxBuffer);
+gl.enableVertexAttribArray(iBoxLocation);
+gl.vertexAttribPointer(iBoxLocation, 1, gl.FLOAT, false, 0, 0);
+gl.bufferData(gl.ARRAY_BUFFER, iBoxBufferData, gl.STATIC_DRAW);
+gl.bindAttribLocation(program, iBoxLocation, "iBox");
 
 export const draw = () => {
-  pointTextureData.fill(0);
-  state.particlesPositions.forEach((pos, k) =>
-    pos.forEach(([x, y], i) => {
-      if (i < maxPoint) {
-        const ux = 0 * maxK + k;
-        const uy = i;
-        const u = (uy * pointTextureWidth + ux) * 2;
+  const boxes = getBoundingBoxes(state.particlesPositions, dMin * 1.6);
 
-        pointTextureData[u + 0] = x;
-        pointTextureData[u + 1] = y;
-      }
-    })
+  pointTextureData.fill(0);
+
+  boxes.forEach(({ box, indexes }, i) => {
+    positionBufferData[i * 12 + 0] = box[0][0];
+    positionBufferData[i * 12 + 1] = box[0][1];
+
+    positionBufferData[i * 12 + 2] = box[1][0];
+    positionBufferData[i * 12 + 3] = box[0][1];
+
+    positionBufferData[i * 12 + 4] = box[1][0];
+    positionBufferData[i * 12 + 5] = box[1][1];
+    //
+    positionBufferData[i * 12 + 6] = box[1][0];
+    positionBufferData[i * 12 + 7] = box[1][1];
+
+    positionBufferData[i * 12 + 8] = box[0][0];
+    positionBufferData[i * 12 + 9] = box[1][1];
+
+    positionBufferData[i * 12 + 10] = box[0][0];
+    positionBufferData[i * 12 + 11] = box[0][1];
+
+    indexes.forEach((is, k) =>
+      is.forEach((index, j) => {
+        const [x, y] = state.particlesPositions[k][index];
+
+        if (j < maxPoint) {
+          const ux = i * maxK + k;
+          const uy = j;
+          const u = (uy * pointTextureWidth + ux) * 2;
+
+          pointTextureData[u + 0] = x;
+          pointTextureData[u + 1] = y;
+        }
+      })
+    );
+  });
+
+  const nPoint = Math.max(
+    ...boxes.map(({ indexes }) => indexes.map(({ length }) => length)).flat()
   );
 
   gl.useProgram(program);
+
+  gl.uniform1i(nPointLocation, nPoint);
+
+  gl.uniform2f(
+    cameraALocation,
+    1 / state.worldDimensions[0],
+    1 / state.worldDimensions[1]
+  );
+  gl.uniform2f(
+    cameraOffsetLocation,
+    state.camera.offset[0],
+    state.camera.offset[1]
+  );
+
+  gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+  gl.bufferData(gl.ARRAY_BUFFER, positionBufferData, gl.DYNAMIC_DRAW);
 
   gl.activeTexture(gl.TEXTURE1);
   gl.bindTexture(gl.TEXTURE_2D, pointTexture);
@@ -130,5 +177,5 @@ export const draw = () => {
   gl.bindTexture(gl.TEXTURE_2D, bannerTexture);
 
   gl.clear(gl.COLOR_BUFFER_BIT);
-  gl.drawArrays(gl.TRIANGLES, 0, 6); // execute program
+  gl.drawArrays(gl.TRIANGLES, 0, 6 * boxes.length);
 };
