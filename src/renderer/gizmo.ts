@@ -1,4 +1,5 @@
 import { state } from "../state";
+import { allyRepulsionForce } from "../system/step";
 import { neighborForce } from "../system/walking";
 
 export const draw = (ctx: CanvasRenderingContext2D) => {
@@ -53,7 +54,7 @@ export const draw = (ctx: CanvasRenderingContext2D) => {
     ctx.beginPath();
     ctx.moveTo(0, 0);
     for (let d = 0; d < l; d += 50) {
-      const y = neighborForce(d);
+      const y = allyRepulsionForce(d);
       ctx.lineTo(d, -y * 1);
     }
     ctx.stroke();

@@ -43,7 +43,7 @@ const targetForce = 12000;
 
 export const onUpdateOrder = () => {};
 
-export const onUpdate = () => {
+export const onUpdate = (lines: Vec2[][]) => {
   state.particlesPositions.forEach((positions, k) =>
     positions.forEach((p, i) => {
       const a = aPool[k][i];

@@ -44,7 +44,7 @@ type Circle = [
 ];
 
 const getCircumscribedCircle = (A: Vec2, B: Vec2, C: Vec2) => {
-  const c = [0, 0, 0];
+  const c: Circle = [0, 0, 0];
   getCircumscribedCircleCenter(c as any, A, B, C);
 
   c[2] = vec2.squaredDistance(A, c as any);

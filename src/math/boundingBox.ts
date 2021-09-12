@@ -53,7 +53,6 @@ import { Box, Vec2 } from "./types";
 }
 
 const boxes = Array.from({ length: 400 }, () => ({
-  particles: [] as { k: number; indexes: number[] }[],
   indexes: state.particlesPositions.map(() => [] as number[]),
   box: [
     [0, 0],
@@ -96,13 +95,6 @@ export const getBoundingBoxes = (positions: Vec2[][], margin: number) => {
 
           changed = true;
         }
-  }
-
-  for (let i = 0; i < n; i++) {
-    boxes[i].particles.length = 0;
-    boxes[i].indexes.forEach((indexes, k) => {
-      if (indexes.length > 0) boxes[i].particles.push({ indexes, k });
-    });
   }
 
   return boxes.slice(0, n);

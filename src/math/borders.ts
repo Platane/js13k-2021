@@ -2,7 +2,7 @@ import { dMin } from "../math/gauss";
 import { Vec2 } from "../math/types";
 import { vec2 } from "gl-matrix";
 
-const lMinSquare = (dMin * 2.3) ** 2;
+const lMinSquare = (dMin * 2.6) ** 2;
 
 const getBorderPoint = (O: Vec2, A: vec2, B: vec2): Vec2 =>
   new Uint16Array([
