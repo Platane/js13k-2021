@@ -2,7 +2,7 @@
 import { Pane } from "tweakpane";
 
 export const debug = {
-  cheapRenderer: false,
+  cheapRenderer: !false,
   hightResolution: false,
   particles: !false,
   boundingBoxes: false,
