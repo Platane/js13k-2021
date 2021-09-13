@@ -18,7 +18,7 @@ export const drawSelectionHightLight = () => {
 
       const edge = getBlobEdge(
         pack.map((i) => state.particlesPositions[k][i]),
-        dMin / 2
+        dMin / 3
       );
 
       if (edge) {

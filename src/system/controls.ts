@@ -216,7 +216,10 @@ const onMouseUp = ({ pageX, pageY, timeStamp }: MouseEvent) => {
   state.selection.rect = null;
   action = null;
 };
-document.addEventListener("mousemove", onMouseMove);
-document.addEventListener("mousedown", onMouseDown);
-document.addEventListener("mouseup", onMouseUp);
-document.addEventListener("contextmenu", (e) => e.preventDefault());
+
+export const init = () => {
+  document.addEventListener("mousemove", onMouseMove);
+  document.addEventListener("mousedown", onMouseDown);
+  document.addEventListener("mouseup", onMouseUp);
+  document.addEventListener("contextmenu", (e) => e.preventDefault());
+};

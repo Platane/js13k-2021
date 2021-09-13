@@ -4,7 +4,7 @@ import { debug } from "./debug/debug";
 
 import { state } from "./state";
 
-import "./system/controls";
+import { init as initControls } from "./system/controls";
 
 import { draw as drawSelection } from "./renderer/selection/selection";
 import { draw as drawGlBlob } from "./renderer/glBlob/glBlob";
@@ -17,6 +17,7 @@ import { drawSelectionHightLight } from "./renderer/selection/selectionHightLigh
 import { ctx } from "./canvas";
 import { onUpdate } from "./system/step";
 import { drawGizmo } from "./renderer/gizmo";
+import { Vec2 } from "./math/types";
 
 const updateRate = 1 / 60;
 const t0 = Date.now() / 1000;
@@ -53,3 +54,41 @@ const loop = () => {
 };
 
 loop();
+
+let demoLoopTimeout: NodeJS.Timeout;
+const demoLoop = () => {
+  clearTimeout(demoLoopTimeout);
+
+  const indexes = Array.from(
+    { length: Math.floor(state.particlesPositions[0].length) },
+    (_, i) => i
+  );
+
+  state.particlesMoveOrders[0].length = 0;
+
+  state.particlesMoveOrders[0].push({
+    indexes,
+    target: {
+      point: new Uint16Array([
+        (Math.random() * 0.6 + 0.2) * state.worldDimensions[0],
+        (Math.random() * 0.6 + 0.2) * state.worldDimensions[1],
+      ]) as any as Vec2,
+    },
+  });
+
+  demoLoopTimeout = setTimeout(demoLoop, 3000);
+};
+demoLoop();
+
+document.getElementById("splash-dismiss")!.addEventListener("click", () => {
+  clearTimeout(demoLoopTimeout);
+  initControls();
+  const splash = document.getElementById("splash")!;
+  splash.style.opacity = "0";
+  splash.style.pointerEvents = "none";
+});
+document.getElementById("splash-up")!.addEventListener("click", () => {
+  const splash = document.getElementById("splash")!;
+  splash.style.opacity = "1";
+  splash.style.pointerEvents = "auto";
+});
