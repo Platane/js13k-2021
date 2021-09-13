@@ -1,34 +1,16 @@
-import { debug } from "../../debug/ui";
+import { ctx } from "../../canvas";
 import { boxContainsPoint } from "../../math/box";
 import { gauss, threshold } from "../../math/gauss";
 import type { Vec2 } from "../../math/types";
 import { state } from "../../state";
 import { unProj } from "../../system/camera";
-import { colors, s, texturesData } from "./textures";
+import { s, texturesData } from "./textures";
 
-export const drawParticles = (ctx: CanvasRenderingContext2D) => {
-  state.particlesPositions.forEach((particles, i) => {
-    for (const [x, y] of particles) {
-      ctx.fillStyle = "#333";
-      ctx.beginPath();
-      ctx.arc(x, y, 5 / state.camera.a, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.fillStyle = colors[i];
-      ctx.beginPath();
-      ctx.arc(x, y, 3 / state.camera.a, 0, Math.PI * 2);
-      ctx.fill();
-    }
-  });
-};
-
-export const drawBlobs = (ctx: CanvasRenderingContext2D) => {
+export const drawBlobs = () => {
   const width = window.innerWidth;
   const height = window.innerHeight;
 
-  const resolution = debug.hightResolution
-    ? 1
-    : Math.floor(Math.sqrt(width * height) / 120) + 1;
+  const resolution = Math.floor(Math.sqrt(width * height) / 120) + 1;
 
   const imageData = ctx.getImageData(0, 0, width, height);
   const { data } = imageData;

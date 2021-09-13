@@ -1,8 +1,9 @@
 import { vec2 } from "gl-matrix";
+import { ctx } from "../../canvas";
 import { Vec2 } from "../../math/types";
 import { state } from "../../state";
 
-export const draw = (ctx: CanvasRenderingContext2D) => {
+export const drawOrder = () => {
   (state.selection.particlesIndexes || []).forEach((i) => {
     const [x, y] = state.particlesPositions[0][i];
 

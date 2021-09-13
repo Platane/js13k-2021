@@ -48,10 +48,6 @@ export const state = {
     rect: null as null | [Vec2, Vec2],
     particlesIndexes: null as null | number[],
   },
-
-  particlesBoundingBoxes: particlesPositions.map(
-    () => [] as { box: Box; indexes: number[] }[]
-  ),
 };
 
 export type State = typeof state;
