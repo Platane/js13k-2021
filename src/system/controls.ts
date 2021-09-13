@@ -79,6 +79,8 @@ const onMouseDown = ({
             p[1]
           )
         ) {
+          state.selection.particlesIndexes = null;
+
           for (let k = state.particlesPositions.length; k--; ) {
             const pack = blobHit(p, state.particlesPositions[k]);
             if (pack) {
