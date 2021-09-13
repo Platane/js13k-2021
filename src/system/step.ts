@@ -33,120 +33,105 @@ export const onUpdate = () => {
 
     //
     // step
+    b.indexes.forEach((is, k) =>
+      is.forEach((i) => {
+        const p = state.particlesPositions[k][i];
 
-    positions.forEach((p, i) => {
-      const k = ks[i];
+        // reset
+        const a = as[k][i];
+        a[0] = 0;
+        a[1] = 0;
 
-      // reset
-      const a = as[i];
-      a[0] = 0;
-      a[1] = 0;
+        // get order
+        const order = state.particlesMoveOrders[k].find((o) =>
+          o.indexes.includes(i)
+        );
 
-      // get order
-      const order = state.particlesMoveOrders[k].find((o) =>
-        o.indexes.includes(b.indexes[k][i])
-      );
+        // repulsion force from allies
+        b.indexes[k].forEach((jj) => {
+          const p2 = state.particlesPositions[k][jj];
 
-      // repulsion force from allies
-      b.indexes[k].forEach((jj) => {
-        const p2 = state.particlesPositions[k][jj];
+          if (p2 === p) return;
 
-        if (p2 === p) return;
+          vec2.sub(v, p2, p);
+          const d = vec2.length(v);
 
-        vec2.sub(v, p2, p);
-        const d = vec2.length(v);
+          const f = allyRepulsionForce(d) * (order ? 1 : 0.8);
 
-        const f = allyRepulsionForce(d) * (order ? 1 : 0.8);
-
-        vec2.scaleAndAdd(a, a, v, -f / d);
-      });
-
-      // follow order
-      if (order) {
-        const { point: t } = order.targets[0];
-
-        vec2.sub(v, t, p);
-        vec2.normalize(v, v);
-
-        vec2.scaleAndAdd(a, a, v, 8000);
-      }
-
-      // get repulsed by the borders
-      if (order) {
-        lines.forEach(({ line }) => {
-          for (let i = line.length - 1; i--; ) {
-            const A = line[i];
-            const B = line[i + 1];
-
-            vec2.sub(n, B, A);
-            const l = vec2.length(n);
-            vec2.scale(n, n, 1 / l);
-            ortho(v, n);
-
-            vec2.sub(m, p, A);
-
-            const u = vec2.dot(n, m);
-            const h = vec2.dot(v, m);
-
-            if (h < 0) vec2.negate(v, v);
-
-            const d = Math.max(1400, Math.abs(h));
-
-            if (
-              -dMin / 10 < u &&
-              u < l + dMin / 10 &&
-              Math.abs(h) < dMin * 1.4
-            ) {
-              const f = (10 * 1000 * 1000) / d;
-
-              vec2.scaleAndAdd(a, a, v, f);
-
-              // vec2.scaleAndAdd(H, A, n, u / l);
-
-              // {
-              //   ctx.lineWidth = 3 / state.camera.a;
-              //   ctx.strokeStyle = "purple";
-              //   ctx.beginPath();
-              //   ctx.moveTo(p[0], p[1]);
-              //   ctx.lineTo(p[0] + v[0] * 3000, p[1] + v[1] * 3000);
-              //   ctx.stroke();
-              // }
-            }
-          }
+          vec2.scaleAndAdd(a, a, v, -f / d);
         });
 
-        // vec2.sub(v, t, p);
-        // vec2.normalize(v, v);
+        // follow order
+        if (order) {
+          vec2.sub(v, order.target.point, p);
+          vec2.normalize(v, v);
 
-        // vec2.scaleAndAdd(a, a, v, 8000);
-      }
-    });
+          vec2.scaleAndAdd(a, a, v, 8000);
+        }
+
+        // get repulsed by the borders
+        if (order) {
+          lines.forEach(({ line }) => {
+            for (let i = line.length - 1; i--; ) {
+              const A = line[i];
+              const B = line[i + 1];
+
+              vec2.sub(n, B, A);
+              const l = vec2.length(n);
+              vec2.scale(n, n, 1 / l);
+              ortho(v, n);
+
+              vec2.sub(m, p, A);
+
+              const u = vec2.dot(n, m);
+              const h = vec2.dot(v, m);
+
+              if (h < 0) vec2.negate(v, v);
+
+              const d = Math.max(1400, Math.abs(h));
+
+              if (
+                -dMin / 10 < u &&
+                u < l + dMin / 10 &&
+                Math.abs(h) < dMin * 1.4
+              ) {
+                const f = (10 * 1000 * 1000) / d;
+
+                vec2.scaleAndAdd(a, a, v, f);
+              }
+            }
+          });
+        }
+      })
+    );
 
     // apply acceleration
-    positions.forEach((p, i) => {
-      const a = as[i];
-      p[0] += a[0] * dt;
-      p[1] += a[1] * dt;
-    });
+    b.indexes.forEach((is, k) =>
+      is.forEach((i) => {
+        const p = state.particlesPositions[k][i];
+
+        // reset
+        const a = as[k][i];
+
+        p[0] += a[0] * dt;
+        p[1] += a[1] * dt;
+      })
+    );
   });
 
   // step move orders
   state.particlesMoveOrders.forEach((orders, k) =>
     orders.forEach((order, i) => {
-      const { point: t } = order.targets[0];
-
       for (let j = order.indexes.length; j--; )
         if (
-          vec2.distance(state.particlesPositions[k][order.indexes[j]], t) < 1000
+          vec2.distance(
+            state.particlesPositions[k][order.indexes[j]],
+            order.target.point
+          ) < 1000
         )
           order.indexes.splice(j, 1);
 
-      if (order.indexes.length === 0) {
-        order.targets.shift();
-
-        if (order.targets.length === 0)
-          state.particlesMoveOrders[k].splice(i, 1);
-      }
+      if (order.indexes.length === 0) state.particlesMoveOrders[k].splice(i, 1);
     })
   );
 };
@@ -154,7 +139,9 @@ export const onUpdate = () => {
 const m: Vec2 = [0, 0];
 const v: Vec2 = [0, 0];
 const n: Vec2 = [0, 0];
-const as = Array.from({ length: 300 }, () => [0, 0] as Vec2);
+const as = state.particlesPositions.map(() =>
+  Array.from({ length: 128 }, () => [0, 0] as Vec2)
+);
 
 const dt = 1 / 60;
 

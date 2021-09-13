@@ -13,7 +13,7 @@ const particlesPositions = [
   ),
 
   Array.from(
-    { length: 4 },
+    { length: 14 },
     () =>
       new Uint16Array([
         (Math.random() * 0.12 + 0.4) * s,
@@ -34,7 +34,7 @@ const particlesPositions = [
 export type MoveTargetPoint = { point: Vec2 };
 export type MoveTargetEnemy = { indexes: number[]; k: number; point: Vec2 };
 export type MoveTarget = MoveTargetPoint | MoveTargetEnemy;
-export type MoveOrder = { targets: MoveTarget[]; indexes: number[] };
+export type MoveOrder = { target: MoveTarget; indexes: number[] };
 
 export const state = {
   camera: { a: 1, offset: [0, 0] as Vec2 },
@@ -45,6 +45,7 @@ export const state = {
   particlesMoveOrders: particlesPositions.map(() => [] as MoveOrder[]),
 
   selection: {
+    k: 0,
     rect: null as null | [Vec2, Vec2],
     particlesIndexes: null as null | number[],
   },

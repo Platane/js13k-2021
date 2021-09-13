@@ -1,7 +1,8 @@
+import { ctx } from "../canvas";
 import { state } from "../state";
 import { allyRepulsionForce } from "../system/step";
 
-export const draw = (ctx: CanvasRenderingContext2D) => {
+export const drawGizmo = () => {
   ctx.lineWidth = 0.7 / state.camera.a;
   ctx.fillStyle = ctx.strokeStyle = "purple";
   ctx.font = `${Math.floor(8 / state.camera.a)}px sans-serif `;
@@ -54,7 +55,7 @@ export const draw = (ctx: CanvasRenderingContext2D) => {
     ctx.moveTo(0, 0);
     for (let d = 0; d < l; d += 50) {
       const y = allyRepulsionForce(d);
-      ctx.lineTo(d, -y * 1);
+      ctx.lineTo(d, -y * 0.4);
     }
     ctx.stroke();
     ctx.restore();

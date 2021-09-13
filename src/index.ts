@@ -16,6 +16,7 @@ import { drawSelectionHightLight } from "./renderer/selection/selectionHightLigh
 
 import { ctx } from "./canvas";
 import { onUpdate } from "./system/step";
+import { drawGizmo } from "./renderer/gizmo";
 
 const updateRate = 1 / 60;
 const t0 = Date.now() / 1000;
@@ -43,6 +44,7 @@ const loop = () => {
   }
   if (debug.boundingBoxes) drawBoundingBox();
   if (debug.meshes) drawMesh();
+  if (debug.gizmo) drawGizmo();
 
   ctx.restore();
 

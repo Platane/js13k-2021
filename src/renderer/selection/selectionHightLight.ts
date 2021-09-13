@@ -6,7 +6,7 @@ import { dMin } from "../../math/gauss";
 
 export const drawSelectionHightLight = () => {
   if (state.selection.particlesIndexes) {
-    const k = 0;
+    const k = state.selection.k;
 
     const indexes = state.selection.particlesIndexes.slice();
 

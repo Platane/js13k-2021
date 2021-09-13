@@ -17,12 +17,10 @@ export const drawOrder = () => {
 
   state.particlesMoveOrders.forEach((orders, k) =>
     orders.forEach((order) => {
-      const t = order.targets[0];
-
       order.indexes.forEach((i) => {
         const p = state.particlesPositions[k][i];
 
-        vec2.subtract(v, t.point, p);
+        vec2.subtract(v, order.target.point, p);
         vec2.normalize(v, v);
         vec2.scaleAndAdd(v, p, v, 20 / state.camera.a);
 

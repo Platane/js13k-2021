@@ -37,12 +37,13 @@ gl.activeTexture(gl.TEXTURE0);
 gl.bindTexture(gl.TEXTURE_2D, bannerTexture);
 gl.uniform1i(bannerTextureLocation, 0);
 const bannerAtlas = document.createElement("canvas");
-bannerAtlas.width = textures.length * textures[0].width;
+bannerAtlas.width = state.particlesPositions.length * textures[0].width;
 bannerAtlas.height = textures[0].height;
 const bannerAtlasCtx = bannerAtlas.getContext("2d")!;
-textures.forEach((canvas, i) =>
-  bannerAtlasCtx.drawImage(canvas, i * canvas.width, 0)
-);
+state.particlesPositions.forEach((_, i) => {
+  const canvas = textures[i % textures.length];
+  bannerAtlasCtx.drawImage(canvas, i * canvas.width, 0);
+});
 gl.texImage2D(
   gl.TEXTURE_2D,
   0,

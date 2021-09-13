@@ -5,6 +5,7 @@ const q = Object.fromEntries(
 );
 
 export const debug = {
+  gizmo: false,
   meshes: false,
   particles: false,
   boundingBoxes: false,

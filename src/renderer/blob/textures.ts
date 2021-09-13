@@ -79,6 +79,31 @@ export const s = 128;
   textures.push(canvas);
 }
 
+{
+  const canvas = document.createElement("canvas");
+  canvas.width = canvas.height = s;
+  const ctx = canvas.getContext("2d")!;
+  ctx.scale(s / 100, s / 100);
+
+  ctx.fillStyle = "#da9143";
+  ctx.beginPath();
+  ctx.fillRect(0, 0, 100, 100);
+
+  ctx.fillStyle = "#e09c52";
+  ctx.beginPath();
+  ctx.arc(50, 60, 28, 0, Math.PI);
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.arc(50, 40, 28, -Math.PI, 0);
+  ctx.fill();
+
+  const { data } = ctx.getImageData(0, 0, s, s);
+  texturesData.push(data);
+
+  textures.push(canvas);
+}
+
 export const colors = texturesData.map(
   (data) => `rgb(${data[0]},${data[1]},${data[2]})`
 );
