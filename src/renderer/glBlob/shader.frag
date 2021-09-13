@@ -61,5 +61,6 @@ void main() {
         mod(pos.y * m, 1.0) * 0.96 + 0.02);
 
     color = texture(bannerTexture, u);
+    color.w = (bestSum - threshold) / (threshold * 0.1);
   }
 }
