@@ -1,7 +1,6 @@
 import { state } from "../state";
 import { getBoundingBoxes } from "../math/boundingBox";
 import { dMin } from "../math/gauss";
-import { ctx } from "../canvas";
 import { Vec2 } from "../math/types";
 import { getTriangulation } from "../math/delaunay";
 import { vec2 } from "gl-matrix";
@@ -11,19 +10,6 @@ import { ortho } from "../math/vec2";
 export const onUpdate = () => {
   // compute boundingBoxes
   const boxes = getBoundingBoxes(state.particlesPositions, dMin * 1.5);
-
-  // {
-  //   ctx.lineWidth = 0.5 / state.camera.a;
-
-  //   boxes.forEach(({ box: [[ax, ay], [bx, by]], indexes }) => {
-  //     ctx.strokeStyle =
-  //       indexes.reduce((s, is) => s + +!!is.length, 0) >= 2
-  //         ? "purple"
-  //         : "orange";
-  //     ctx.beginPath();
-  //     ctx.strokeRect(ax, ay, bx - ax, by - ay);
-  //   });
-  // }
 
   // compute the mesh for each box
   // + compute the border
@@ -40,36 +26,10 @@ export const onUpdate = () => {
 
     const triangles = getTriangulation(positions);
 
-    // {
-    //   ctx.lineWidth = 0.3 / state.camera.a;
-
-    //   triangles.forEach((tr) => {
-    //     ctx.strokeStyle =
-    //       ks[tr[0]] != ks[tr[1]] || ks[tr[0]] != ks[tr[2]] ? "green" : "blue";
-    //     ctx.beginPath();
-    //     ctx.moveTo(positions[tr[0]][0], positions[tr[0]][1]);
-    //     for (let i = 3; i--; )
-    //       ctx.lineTo(positions[tr[i]][0], positions[tr[i]][1]);
-    //     ctx.stroke();
-    //   });
-    // }
-
     const lines =
       b.indexes.reduce((s, is) => s + +!!is.length, 0) >= 2
         ? getBorders(positions, ks, triangles)
         : [];
-
-    // {
-    //   ctx.lineWidth = 2.6 / state.camera.a;
-    //   ctx.strokeStyle = "blue";
-    //   lines.forEach(({ line }) => {
-    //     ctx.beginPath();
-    //     ctx.moveTo(line[0][0], line[0][1]);
-    //     for (let i = 0; i < line.length; i++)
-    //       ctx.lineTo(line[i][0], line[i][1]);
-    //     ctx.stroke();
-    //   });
-    // }
 
     //
     // step
@@ -175,11 +135,13 @@ export const onUpdate = () => {
     orders.forEach((order, i) => {
       const { point: t } = order.targets[0];
 
-      if (
-        order.indexes.some(
-          (i) => vec2.distance(state.particlesPositions[k][i], t) < 1000
+      for (let j = order.indexes.length; j--; )
+        if (
+          vec2.distance(state.particlesPositions[k][order.indexes[j]], t) < 1000
         )
-      ) {
+          order.indexes.splice(j, 1);
+
+      if (order.indexes.length === 0) {
         order.targets.shift();
 
         if (order.targets.length === 0)

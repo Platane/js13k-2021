@@ -5,9 +5,9 @@ const q = Object.fromEntries(
 );
 
 export const debug = {
-  meshes: !false,
-  particles: !false,
-  boundingBoxes: !false,
+  meshes: false,
+  particles: false,
+  boundingBoxes: false,
 };
 Object.assign(debug, q);
 if ("all" in q) for (let i in debug) (debug as any)[i] = q.all;
