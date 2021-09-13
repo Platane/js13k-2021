@@ -1,5 +1,5 @@
 import { vec2 } from "gl-matrix";
-import { dMin, isInsideBlob, tau, threshold } from "./gauss";
+import { dMin, isInsideBlob } from "./gauss";
 import { Vec2 } from "./types";
 import { ortho } from "./vec2";
 

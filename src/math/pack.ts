@@ -53,6 +53,8 @@ export const getPack = (
   indexes = positions.map((_, j) => j)
 ) => {
   const pack = [i];
+  const j = indexes.indexOf(i);
+  if (j !== -1) indexes.splice(j, 1);
 
   for (let h = 0; h < pack.length; h++) {
     const i = pack[h];

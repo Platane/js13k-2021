@@ -1,6 +1,7 @@
+import { ctx } from "../../canvas";
 import { state } from "../../state";
 
-export const draw = (ctx: CanvasRenderingContext2D) => {
+export const draw = () => {
   ctx.lineWidth = 0.5 / state.camera.a;
   ctx.strokeStyle = "#000";
 

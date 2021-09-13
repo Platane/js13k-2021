@@ -1,6 +1,7 @@
 import { ctx } from "../../canvas";
+import { getBoundingBoxes } from "../../math/boundingBox";
 import { boxContainsPoint } from "../../math/box";
-import { gauss, threshold } from "../../math/gauss";
+import { dMin, gauss, threshold } from "../../math/gauss";
 import type { Vec2 } from "../../math/types";
 import { state } from "../../state";
 import { unProj } from "../../system/camera";
@@ -15,6 +16,8 @@ export const drawBlobs = () => {
   const imageData = ctx.getImageData(0, 0, width, height);
   const { data } = imageData;
 
+  const boxes = getBoundingBoxes(state.particlesPositions, dMin * 1.5);
+
   for (let sx = 0; sx < width; sx += resolution)
     for (let sy = 0; sy < height; sy += resolution) {
       let bestI = 0;
@@ -22,10 +25,10 @@ export const drawBlobs = () => {
 
       unProj(c, sx + resolution / 2, sy + resolution / 2);
 
-      state.particlesBoundingBoxes.forEach((bb, k) =>
-        bb.forEach(({ box, indexes }) => {
-          if (boxContainsPoint(box, c)) {
-            const sum = indexes.reduce((sum, i) => {
+      boxes.forEach(({ box, indexes }) => {
+        if (boxContainsPoint(box, c)) {
+          for (let k = indexes.length; k--; ) {
+            const sum = indexes[k].reduce((sum, i) => {
               const [x, y] = state.particlesPositions[k][i];
               const d = Math.hypot(x - c[0], y - c[1]);
               const g = gauss(d);
@@ -37,8 +40,8 @@ export const drawBlobs = () => {
               bestI = k;
             }
           }
-        })
-      );
+        }
+      });
 
       if (bestSum > threshold) {
         const texture = texturesData[bestI];

@@ -10,3 +10,4 @@ export const debug = {
   boundingBoxes: !false,
 };
 Object.assign(debug, q);
+if ("all" in q) for (let i in debug) (debug as any)[i] = q.all;

@@ -10,10 +10,12 @@ import { draw as drawSelection } from "./renderer/selection/selection";
 import { draw as drawGlBlob } from "./renderer/glBlob/glBlob";
 import { drawParticles } from "./renderer/blob/particles";
 import { drawBoundingBox } from "./renderer/boundingBox";
-import { ctx } from "./canvas";
-import { onUpdate } from "./system/step";
 import { drawOrder } from "./renderer/selection/order";
 import { drawMesh } from "./renderer/blob/mesh";
+import { drawSelectionHightLight } from "./renderer/selection/selectionHightLight";
+
+import { ctx } from "./canvas";
+import { onUpdate } from "./system/step";
 
 const updateRate = 1 / 60;
 const t0 = Date.now() / 1000;
@@ -33,6 +35,8 @@ const loop = () => {
 
   drawGlBlob();
   drawSelection();
+  drawSelectionHightLight();
+
   if (debug.particles) {
     drawParticles();
     drawOrder();
