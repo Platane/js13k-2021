@@ -1,5 +1,6 @@
 {
   "name": "delph",
+  "description": "A pretty blob simulation with zero game play. Submitted for the 2021 js13kGames.com competition.",
   "repository": "github:platane/delph",
   "version": "1.0.0",
   "private": true,
