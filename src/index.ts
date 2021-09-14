@@ -21,13 +21,14 @@ import { Vec2 } from "./math/types";
 
 const updateRate = 1 / 60;
 const t0 = Date.now() / 1000;
-let k = 0;
+let epoch = 0;
 
 const loop = () => {
   const now = Date.now() / 1000;
 
   // update
-  for (; t0 + k * updateRate <= now; k++) onUpdate();
+  for (let k = 0; k < 100 && t0 + epoch * updateRate <= now; epoch++, k++)
+    onUpdate();
 
   // draw
   ctx.clearRect(0, 0, 9999, 9999);
