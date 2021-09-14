@@ -14,7 +14,7 @@ import { drawOrder } from "./renderer/selection/order";
 import { drawMesh } from "./renderer/blob/mesh";
 import { drawSelectionHightLight } from "./renderer/selection/selectionHightLight";
 
-import { ctx } from "./canvas";
+import { ctx, dpr } from "./canvas";
 import { onUpdate } from "./system/step";
 import { drawGizmo } from "./renderer/gizmo";
 import { Vec2 } from "./math/types";
@@ -38,7 +38,7 @@ const loop = () => {
     Math.min(state.viewportDimensions[0], state.viewportDimensions[0]) *
     state.camera.a;
 
-  (ctx as any).pixelSize = 1 / s;
+  (ctx as any).pixelSize = (1 / s) * dpr;
   ctx.scale(s, s);
   ctx.translate(state.camera.offset[0], state.camera.offset[1]);
 
