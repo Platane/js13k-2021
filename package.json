@@ -8,34 +8,30 @@
     "node": "16"
   },
   "dependencies": {
-    "dat.gui": "0.7.7",
     "gl-matrix": "3.3.0",
-    "park-miller": "2.0.0",
-    "stats.js": "0.17.0",
-    "tweakpane": "3.0.5"
+    "park-miller": "2.0.0"
   },
   "devDependencies": {
     "@ampproject/rollup-plugin-closure-compiler": "0.27.0",
     "@babel/core": "7.15.5",
     "@babel/preset-typescript": "7.15.0",
-    "@babel/types": "7.15.6",
     "@rollup/plugin-babel": "5.3.0",
     "@rollup/plugin-commonjs": "20.0.0",
     "@rollup/plugin-node-resolve": "13.0.4",
-    "@types/dat.gui": "0.7.7",
+    "@types/node": "16.9.1",
     "@types/google-closure-compiler": "0.0.19",
     "@types/html-minifier-terser": "6.0.0",
     "@types/jest": "27.0.1",
     "@types/mkdirp": "1.0.2",
+    "advzip-bin": "2.0.0",
     "babel-plugin-transform-define": "2.0.1",
-    "esbuild": "0.12.26",
     "html-minifier-terser": "6.0.2",
-    "jest": "27.1.1",
+    "jest": "27.2.0",
     "mkdirp": "1.0.4",
     "prettier": "2.4.0",
     "rollup": "2.56.3",
     "rollup-pluginutils": "2.8.2",
-    "terser": "5.7.2",
+    "terser": "5.8.0",
     "ts-jest": "27.0.5",
     "ts-node": "10.2.1",
     "typescript": "4.4.3",
@@ -45,7 +41,7 @@
     "test": "jest --config ./jest.config.js --no-cache --passWithNoTests --coverage --verbose",
     "type": "tsc --noEmit",
     "lint": "yarn prettier -c '**/*.{ts,tsx,js,jsx,json,md}' '!**/{dist,coverage}/**'",
-    "build": "ts-node -e \"require('./scripts/build.ts').build()\" && ( cd dist ; advzip -4 -a -q ./bundle.zip ./* ) && du -b dist/bundle.zip | cut -f1",
+    "build": "ts-node -e \"require('./scripts/build.ts').build()\"",
     "dev": "ts-node -e \"require('./scripts/dev.ts').dev()\""
   }
 }

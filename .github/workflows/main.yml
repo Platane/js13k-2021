@@ -36,9 +36,6 @@ jobs:
           node-version: 16
           cache: pnpm
 
-      - name: install advzip
-        run: sudo apt install advancecomp
-
       - run: pnpm install --frozen-lockfile
       - run: npm run build
 

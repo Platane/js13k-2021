@@ -8,13 +8,14 @@ import { minify as minifyHtml } from "html-minifier-terser";
 import { minify, MinifyOptions } from "terser";
 import compiler from "@ampproject/rollup-plugin-closure-compiler";
 import mkdirp from "mkdirp";
-
+import { execFileSync } from "child_process";
+import { glsl } from "./rollup-plugin-glsl";
+// @ts-ignore
+import advzipBin from "advzip-bin";
 // @ts-ignore
 import babelPluginDefine from "babel-plugin-transform-define";
 // @ts-ignore
 import babelPresetTypescript from "@babel/preset-typescript";
-
-import { glsl } from "./rollup-plugin-glsl";
 
 export const terserOptions: MinifyOptions = {
   compress: {
@@ -96,6 +97,8 @@ export const rollupOutputOptions: RollupOptions = {
   },
 };
 
+const formatSize = (s: number) => (s / 1024).toFixed(2) + "K";
+
 export const build = async () => {
   // bundle with rollup
   const bundle = await rollup(createRollupInputOptions(true));
@@ -110,7 +113,7 @@ export const build = async () => {
   }
 
   const htmlContent = fs
-    .readFileSync(path.resolve(__dirname, "..", "src", "index.html"))
+    .readFileSync(path.join(__dirname, "..", "src", "index.html"))
     .toString();
 
   const minifiedHtmlContent = await minifyHtml(
@@ -121,13 +124,32 @@ export const build = async () => {
     minifyHtmlOptions
   );
 
+  const distDir = path.join(__dirname, "..", "dist");
   try {
-    fs.rmSync(path.resolve(__dirname, "..", "dist"), { recursive: true });
+    fs.rmSync(distDir, { recursive: true });
   } catch (err) {}
-  mkdirp.sync(path.resolve(__dirname, "..", "dist"));
+  mkdirp.sync(distDir);
 
-  fs.writeFileSync(
-    path.resolve(__dirname, "..", "dist", "index.html"),
-    minifiedHtmlContent
-  );
+  fs.writeFileSync(path.join(distDir, "index.html"), minifiedHtmlContent);
+
+  execFileSync(advzipBin, [
+    "--add",
+    "--shrink-insane",
+    path.join(distDir, "bundle.zip"),
+    ...listFiles(distDir),
+  ]);
+
+  const size = fs.statSync(path.join(distDir, "bundle.zip")).size;
+  console.log(`${size}o`.padEnd(10, " ") + `\t(${formatSize(size)}o)`);
+};
+
+const listFiles = (filename: string): string[] => {
+  const stat = fs.statSync(filename);
+  if (stat.isFile()) return [filename];
+  if (stat.isDirectory())
+    return fs
+      .readdirSync(filename)
+      .map((f) => listFiles(path.join(filename, f)))
+      .flat();
+  return [];
 };
