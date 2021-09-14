@@ -7,7 +7,7 @@ const [canvasGl, canvas2d] = Array.from(
 export const ctx = canvas2d.getContext("2d")!;
 export const gl = canvasGl.getContext("webgl2")!;
 
-const dpr = Math.min(window.devicePixelRatio ?? 1, 2);
+export const dpr = Math.min(window.devicePixelRatio ?? 1, 2);
 
 const resize = () => {
   const w = window.innerWidth * dpr;

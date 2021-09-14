@@ -1,9 +1,11 @@
+import { dpr } from "../canvas";
 import { Vec2 } from "../math/types";
 import { state } from "../state";
 
 export const a = () =>
-  state.camera.a *
-  Math.min(state.viewportDimensions[0], state.viewportDimensions[0]);
+  (state.camera.a *
+    Math.min(state.viewportDimensions[0], state.viewportDimensions[0])) /
+  dpr;
 
 export const unProjX = (screenX: number) =>
   Math.floor(screenX / a() - state.camera.offset[0]);
