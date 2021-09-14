@@ -10,7 +10,8 @@ export const drawSelectionHightLight = () => {
 
     const indexes = state.selection.particlesIndexes.slice();
 
-    ctx.lineWidth = 3 / state.camera.a;
+    ctx.save();
+    ctx.lineWidth = 3 * (ctx as any).pixelSize;
     ctx.strokeStyle = "#666";
 
     while (indexes.length) {
@@ -28,5 +29,6 @@ export const drawSelectionHightLight = () => {
         ctx.stroke();
       }
     }
+    ctx.restore();
   }
 };

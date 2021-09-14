@@ -1,29 +1,41 @@
 import { state } from "./state";
 
-export const canvas = document.getElementsByTagName("canvas")[0];
-export const ctx = canvas.getContext("2d")!;
+const [canvasGl, canvas2d] = Array.from(
+  document.getElementsByTagName("canvas")
+);
+
+export const ctx = canvas2d.getContext("2d")!;
+export const gl = canvasGl.getContext("webgl2")!;
+
+const dpr = Math.min(window.devicePixelRatio ?? 1, 2);
 
 const resize = () => {
-  canvas.width = canvas.clientWidth;
-  canvas.height = canvas.clientHeight;
+  const w = window.innerWidth * dpr;
+  const h = window.innerHeight * dpr;
 
-  state.camera.a = Math.min(
-    canvas.clientWidth / state.worldDimensions[0],
-    canvas.clientHeight / state.worldDimensions[1]
-  );
+  canvasGl.width = canvas2d.width = w;
+  canvasGl.height = canvas2d.height = h;
+
+  gl.viewport(0, 0, w, h);
+
+  state.viewportDimensions = [w, h];
+
+  centerCamera();
 };
+
+const centerCamera = () => {
+  const r = Math.min(
+    state.viewportDimensions[0] / state.worldDimensions[0],
+    state.viewportDimensions[1] / state.worldDimensions[1]
+  );
+
+  const m = 3;
+
+  const a = (r / state.viewportDimensions[0]) * m;
+  state.camera.a = a;
+  state.camera.offset[0] = -state.worldDimensions[0] * ((1 - 1 / m) / 2);
+  state.camera.offset[1] = -state.worldDimensions[1] * ((1 - 1 / m) / 2);
+};
+
 resize();
 window.addEventListener("resize", resize);
-
-const canvas2 = document.createElement("canvas");
-canvas2.height = canvas2.width = Math.min(
-  window.innerWidth,
-  window.innerHeight
-);
-canvas2.style.position = "fixed";
-canvas2.style.zIndex = "-1";
-canvas2.style.top = "0";
-canvas2.style.left = "0";
-canvas2.style.transform = "scale(1,-1)";
-document.body.appendChild(canvas2);
-export const gl = canvas2.getContext("webgl2")!;

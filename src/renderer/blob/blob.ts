@@ -8,8 +8,7 @@ import { unProj } from "../../system/camera";
 import { s, texturesData } from "./textures";
 
 export const drawBlobs = () => {
-  const width = window.innerWidth;
-  const height = window.innerHeight;
+  const [width, height] = state.viewportDimensions;
 
   const resolution = Math.floor(Math.sqrt(width * height) / 120) + 1;
 

@@ -4,7 +4,7 @@ import { dMin } from "../math/gauss";
 import { state } from "../state";
 
 export const drawBoundingBox = () => {
-  ctx.lineWidth = 0.5 / state.camera.a;
+  ctx.lineWidth = 0.5 / (ctx as any).scaleUnit;
 
   getBoundingBoxes(state.particlesPositions, dMin * 1.6).forEach(({ box }) => {
     ctx.strokeStyle = "purple";

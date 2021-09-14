@@ -2,7 +2,7 @@ import { ctx } from "../../canvas";
 import { state } from "../../state";
 
 export const draw = () => {
-  ctx.lineWidth = 0.5 / state.camera.a;
+  ctx.lineWidth = 0.25 * (ctx as any).pixelSize;
   ctx.strokeStyle = "#000";
 
   if (state.selection.rect) {

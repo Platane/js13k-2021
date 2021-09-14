@@ -1,6 +1,6 @@
 import { Vec2 } from "./types";
 
-export const tau = (2.8 / 100) * (1 << 16);
+export const tau = (2.8 / 400) * (1 << 16);
 
 export const threshold = 0.38;
 

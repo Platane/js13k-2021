@@ -6,7 +6,7 @@ import { Vec2 } from "../../math/types";
 import { state } from "../../state";
 
 export const drawMesh = () => {
-  ctx.lineWidth = 0.8 / state.camera.a;
+  ctx.lineWidth = 0.8 * (ctx as any).pixelSize;
 
   getBoundingBoxes(state.particlesPositions, dMin * 1.6).forEach(
     ({ indexes }) => {

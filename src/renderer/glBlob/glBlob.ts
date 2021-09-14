@@ -6,6 +6,8 @@ import { state } from "../../state";
 import { dMin, tau, threshold } from "../../math/gauss";
 import { textures } from "../blob/textures";
 import { getBoundingBoxes } from "../../math/boundingBox";
+import { getProjection } from "./getProjection";
+import { vec2 } from "gl-matrix";
 
 const program = createProgram(gl, codeVert, codeFrag);
 gl.useProgram(program);
@@ -74,9 +76,9 @@ gl.generateMipmap(gl.TEXTURE_2D);
 const nPointLocation = gl.getUniformLocation(program, "nPoint");
 
 //
-// camera
-const cameraALocation = gl.getUniformLocation(program, "camera_a");
-const cameraOffsetLocation = gl.getUniformLocation(program, "camera_offset");
+// worldMatrix
+const worldMatrixLocation = gl.getUniformLocation(program, "worldMatrix");
+const worldMatrixData = new Float32Array(9);
 
 // buffer
 const positionBuffer = gl.createBuffer();
@@ -146,16 +148,14 @@ export const draw = () => {
 
   gl.uniform1i(nPointLocation, nPoint);
 
-  gl.uniform2f(
-    cameraALocation,
-    1 / state.worldDimensions[0],
-    1 / state.worldDimensions[1]
+  getProjection(
+    worldMatrixData,
+    state.viewportDimensions[0] / state.viewportDimensions[1],
+    1 / state.camera.a,
+    state.camera.offset
   );
-  gl.uniform2f(
-    cameraOffsetLocation,
-    state.camera.offset[0],
-    state.camera.offset[1]
-  );
+
+  gl.uniformMatrix3fv(worldMatrixLocation, false, worldMatrixData);
 
   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
   gl.bufferData(gl.ARRAY_BUFFER, positionBufferData, gl.DYNAMIC_DRAW);

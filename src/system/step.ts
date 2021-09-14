@@ -66,7 +66,7 @@ export const onUpdate = () => {
           vec2.sub(v, order.target.point, p);
           vec2.normalize(v, v);
 
-          vec2.scaleAndAdd(a, a, v, 8000);
+          vec2.scaleAndAdd(a, a, v, 3000);
         }
 
         // get repulsed by the borders
@@ -88,14 +88,14 @@ export const onUpdate = () => {
 
               if (h < 0) vec2.negate(v, v);
 
-              const d = Math.max(1400, Math.abs(h));
+              const d = Math.max(800, Math.abs(h));
 
               if (
                 -dMin / 10 < u &&
                 u < l + dMin / 10 &&
                 Math.abs(h) < dMin * 1.4
               ) {
-                const f = (10 * 1000 * 1000) / d;
+                const f = (5 * 1000 * 1000) / d;
 
                 vec2.scaleAndAdd(a, a, v, f);
               }
@@ -127,7 +127,7 @@ export const onUpdate = () => {
           vec2.distance(
             state.particlesPositions[k][order.indexes[j]],
             order.target.point
-          ) < 1000
+          ) < 400
         )
           order.indexes.splice(j, 1);
 
@@ -146,11 +146,11 @@ const as = state.particlesPositions.map(() =>
 const dt = 1 / 60;
 
 export const allyRepulsionForce = (d: number) => {
-  if (d < 600) d = 600;
+  if (d < 720) d = 720;
 
-  const d0 = dMin * 0.9;
+  const d0 = dMin * 1.1;
 
-  let f = (1000 * 2000 * 2000) / (d * d);
+  let f = (200 * 2000 * 2000) / (d * d);
 
   if (d > d0) f = f / (1 + (d - d0) / (dMin * 0.5)) ** 4;
   if (d > d0 * 1.3) f = 0;

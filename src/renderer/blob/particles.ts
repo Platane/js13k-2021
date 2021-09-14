@@ -7,12 +7,12 @@ export const drawParticles = () => {
     for (const [x, y] of particles) {
       ctx.fillStyle = "#333";
       ctx.beginPath();
-      ctx.arc(x, y, 5 / state.camera.a, 0, Math.PI * 2);
+      ctx.arc(x, y, 5 * (ctx as any).pixelSize, 0, Math.PI * 2);
       ctx.fill();
 
       ctx.fillStyle = colors[i];
       ctx.beginPath();
-      ctx.arc(x, y, 3 / state.camera.a, 0, Math.PI * 2);
+      ctx.arc(x, y, 3 * (ctx as any).pixelSize, 0, Math.PI * 2);
       ctx.fill();
     }
   });
