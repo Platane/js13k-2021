@@ -80,8 +80,8 @@ const demoLoop = () => {
     indexes,
     target: {
       point: new Uint16Array([
-        (Math.random() * 0.6 + 0.2) * state.worldDimensions[0],
-        (Math.random() * 0.6 + 0.2) * state.worldDimensions[1],
+        (Math.random() * 0.2 + 0.4) * state.worldDimensions[0],
+        (Math.random() * 0.2 + 0.4) * state.worldDimensions[1],
       ]) as any as Vec2,
     },
   });
