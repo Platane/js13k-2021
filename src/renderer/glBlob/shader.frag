@@ -17,7 +17,7 @@ float gauss(float x) { return exp(-0.5 * (x * x) / (tauSquare)); }
 
 void main() {
 
-  color = vec4(0.0, 0.0, 0.0, 0.05);
+  // color = vec4(0.0, 0.0, 0.0, 0.05);
 
   float bestSum = 0.0;
   int bestK = -1;
